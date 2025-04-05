@@ -15,7 +15,7 @@ const userSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
-export async function registerUser(previousState, formData) {
+export async function registerUser(formData) {
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
   const email = formData.get("email");
@@ -61,6 +61,13 @@ export async function registerUser(previousState, formData) {
   });
   await user.save();
 
+  if (!user) {
+    return {
+      success: false,
+      errors: { error: { message: "User not created" } },
+    };
+  }
+
   const secretKey = process.env.JWT_SECRET;
   const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: "24h" });
 
@@ -74,7 +81,10 @@ export async function registerUser(previousState, formData) {
     sameSite: "strict",
   });
 
-  return redirect("/pages/login");
+  return {
+    success: true,
+    message: "User registered successfully!",
+  };
 }
 
 export async function loginUser(previousState, formData) {
@@ -123,5 +133,5 @@ export async function loginUser(previousState, formData) {
 export async function logoutUser() {
   const cookieStore = await cookies();
   cookieStore.delete("dentalserviceapp");
-  return redirect("/pages/login");
+  return redirect("/login");
 }
