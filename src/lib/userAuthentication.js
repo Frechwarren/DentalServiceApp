@@ -26,7 +26,7 @@ export async function authUser() {
     return decoded;
   } catch (error) {
     console.error("Error verifying token:", error);
-    return null;
+    return redirect("/");
   }
 }
 
