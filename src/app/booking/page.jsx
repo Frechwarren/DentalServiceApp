@@ -5,6 +5,7 @@ import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
+import { useRouter } from "next/navigation";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -29,6 +30,9 @@ export default function BookingPage() {
   });
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
@@ -42,7 +46,21 @@ export default function BookingPage() {
 
   const handleFormSubmit = async (formData) => {
     setBookingData((prev) => ({ ...prev, formData }));
-    await bookService({ ...bookingData, formData });
+    setPending(true);
+
+    try {
+      const response = await bookService({ ...bookingData, formData });
+      if (!response.success) {
+        setError(response.errors.message);
+      } else {
+        alert("Booking successful!");
+        router.push("/confirmation");
+      }
+    } catch (error) {
+      setError("Failed to book the service. Please try again.");
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
@@ -130,7 +148,7 @@ export default function BookingPage() {
         {currentStep === 2 && (
           <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
-        {currentStep === 3 && <AppointmentForm onSubmit={handleFormSubmit} />}
+        {currentStep === 3 && <AppointmentForm onSubmit={handleFormSubmit} pending={pending}/>}
       </div>
     </div>
   );
