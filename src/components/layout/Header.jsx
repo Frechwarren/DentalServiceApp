@@ -30,20 +30,20 @@ const Header = async () => {
                 >
                   Home
                 </Link>
-                <Link
-                  href="/booking"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Book Appointment
-                </Link>
-                <Link
-                  href="/"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Services
-                </Link>
               </>
             )}
+            <Link
+              href="/booking"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Book Appointment
+            </Link>
+            <Link
+              href="#service"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Services
+            </Link>
             {authenticatedUser && (
               <button
                 onClick={logoutUser}

@@ -2,45 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-
-const dentists = [
-  {
-    id: "1",
-    name: "Dr. Laurent Jones",
-    specialization: "General Dentistry",
-    image:
-      "https://images.unsplash.com/photo-1674775372058-c4c8813c6611?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    rating: 4.8,
-    experience: "15 years",
-  },
-  {
-    id: "2",
-    name: "Dr. Michael Chen",
-    specialization: "Orthodontics",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    rating: 4.9,
-    experience: "12 years",
-  },
-  {
-    id: "3",
-    name: "Dr. Emily Rodriguez",
-    specialization: "Cosmetic Dentistry",
-    image:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    rating: 4.7,
-    experience: "10 years",
-  },
-  {
-    id: "4",
-    name: "Dr. David Kim",
-    specialization: "Emergency Care",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    rating: 4.9,
-    experience: "18 years",
-  },
-];
+import dentists from "@/mockData/dentist.json";
 
 const DentistSelection = ({ onSelectDentist }) => {
   const [selectedDentist, setSelectedDentist] = useState(null);
