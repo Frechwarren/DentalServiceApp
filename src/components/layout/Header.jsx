@@ -22,16 +22,6 @@ const Header = async () => {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            {!authenticatedUser && (
-              <>
-                <Link
-                  href="/"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Home
-                </Link>
-              </>
-            )}
             <Link
               href="/booking"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
@@ -43,6 +33,12 @@ const Header = async () => {
               className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Services
+            </Link>
+            <Link
+              href="#contactInfo"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Contact Us
             </Link>
             {authenticatedUser && (
               <button

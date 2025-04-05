@@ -27,7 +27,7 @@ const HomePage = () => {
               Book Appointment
             </Link>
             <Link
-              href="/"
+              href="#service"
               className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10"
             >
               Our Services
