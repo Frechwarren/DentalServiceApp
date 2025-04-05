@@ -15,10 +15,10 @@ export async function POST(req) {
   // Check if the user already exists
   const existingUser = await Users.findOne({ email });
   if (existingUser) {
-    return {
+    return NextResponse.json({
       success: false,
-      errors: { email: { message: "Email already in use" } },
-    };
+      email: ["Email already in use"],
+    });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,4 +51,3 @@ export async function POST(req) {
     success: true,
   });
 }
-

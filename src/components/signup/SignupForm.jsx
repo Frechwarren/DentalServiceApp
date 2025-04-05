@@ -3,6 +3,15 @@
 import { signup } from "@/actions/useUserAction";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod"; // Import Zod
+
+// Define the Zod schema for validation
+const signupSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
 
 const SignupForm = () => {
   const router = useRouter();
@@ -21,6 +30,10 @@ const SignupForm = () => {
       ...prev,
       [name]: value,
     }));
+    setError((prev) => ({
+      ...prev,
+      [name]: null,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -29,15 +42,22 @@ const SignupForm = () => {
     setError(null);
 
     try {
-      const response = await signup(formData);
+      signupSchema.parse(formData); // This will throw an error if validation fails
 
+      const response = await signup(formData);
       if (!response.success) {
-        setError("An error occurred during signup.");
+        setError(response);
       } else {
+        alert("User registered successfully!");
         router.push("/login");
       }
     } catch (validationError) {
-      setError("An unexpected error occurred.");
+      if (validationError instanceof z.ZodError) {
+        const errorMessages = validationError.flatten().fieldErrors;
+        setError(errorMessages);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setPending(false);
     }
@@ -52,6 +72,11 @@ const SignupForm = () => {
           </h2>
           {/* Form Fields */}
           <div className="mb-4 text-black font-medium">
+            {error && (
+              <span className="my-2 text-red-500 text-sm">
+                {error?.firstName}
+              </span>
+            )}
             <input
               type="text"
               id="firstName"
@@ -64,6 +89,11 @@ const SignupForm = () => {
             />
           </div>
           <div className="mb-4 text-black font-medium">
+            {error && (
+              <span className="my-2 text-red-500 text-sm">
+                {error?.firstName}
+              </span>
+            )}
             <input
               type="text"
               id="lastName"
@@ -76,7 +106,9 @@ const SignupForm = () => {
             />
           </div>
           <div className="mb-4 text-black font-medium">
-            {error && <span className="text-red-500 text-sm">{error}</span>}
+            {error && (
+              <span className="my-2 text-red-500 text-sm">{error?.email}</span>
+            )}
             <input
               type="email"
               id="email"
@@ -89,6 +121,11 @@ const SignupForm = () => {
             />
           </div>
           <div className="mb-4 text-black font-medium">
+            {error && (
+              <span className="my-2 text-red-500 text-sm">
+                {error?.password}
+              </span>
+            )}
             <input
               type="password"
               id="password"
