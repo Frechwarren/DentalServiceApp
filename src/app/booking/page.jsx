@@ -4,6 +4,7 @@ import { useState } from "react";
 import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
+import { bookService } from "@/actions/useBookServiceAction";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -34,15 +35,14 @@ export default function BookingPage() {
     setCurrentStep(2);
   };
 
-  const handleTimeSelect = (time) => {
-    setBookingData((prev) => ({ ...prev, time }));
+  const handleDateAndTimeSelect = ({ time, date }) => {
+    setBookingData((prev) => ({ ...prev, time, date }));
     setCurrentStep(3);
   };
 
-  const handleFormSubmit = (formData) => {
+  const handleFormSubmit = async (formData) => {
     setBookingData((prev) => ({ ...prev, formData }));
-    // Here you would typically send the data to your backend
-    console.log("Booking completed:", { ...bookingData, formData });
+    await bookService({ ...bookingData, formData });
   };
 
   return (
@@ -128,7 +128,7 @@ export default function BookingPage() {
           <DentistSelection onSelectDentist={handleDentistSelect} />
         )}
         {currentStep === 2 && (
-          <TimeSlotPicker onSelectTime={handleTimeSelect} />
+          <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
         {currentStep === 3 && <AppointmentForm onSubmit={handleFormSubmit} />}
       </div>

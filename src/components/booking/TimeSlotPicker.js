@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const TimeSlotPicker = ({ onSelectTime }) => {
+const TimeSlotPicker = ({ onSelectDateAndTime }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
 
@@ -27,8 +27,10 @@ const TimeSlotPicker = ({ onSelectTime }) => {
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
-    onSelectTime(time);
+    onSelectDateAndTime({ time, date: selectedDate });
   };
+
+  console.log("Selected day:", selectedDate.toLocaleDateString("en-US"));
 
   return (
     <div className="py-12 bg-white">
