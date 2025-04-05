@@ -1,13 +1,32 @@
 "use client";
 
+import { getUser } from "@/actions/useUserAction";
 import AppointmentList from "@/components/dashboard/AppointmentList";
 import UserProfile from "@/components/dashboard/UserProfile";
 import SearchBar from "@/components/layout/SearchBar";
-import { useState } from "react";
+import { getUserIdFromCookie } from "@/lib/userData";
+import { useEffect, useState } from "react";
 
 const page = () => {
+  const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("appointments");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = await getUserIdFromCookie();
+      if (!userId) {
+        window.location.href = "/login";
+      }
+      const userData = await getUser(userId);
+      if (!userData) {
+        console.error("User data not found");
+        return;
+      }
+      setUserData(userData);
+    };
+    fetchUserData();
+  }, []);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -54,7 +73,7 @@ const page = () => {
             {activeTab === "appointments" ? (
               <AppointmentList searchQuery={searchQuery} />
             ) : (
-              <UserProfile />
+              <UserProfile userData={userData} />
             )}
           </div>
         </div>
