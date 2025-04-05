@@ -39,8 +39,10 @@ const DentistSelection = ({ onSelectDentist }) => {
                 <Image
                   src={dentist.image}
                   alt={dentist.name}
-                  fill
-                  className="rounded-lg object-cover"
+                  width={200}
+                  height={200}
+                  className="rounded-lg object-cover w-full h-full"
+                  priority
                 />
               </div>
               <h3 className="text-lg font-medium text-gray-900">
