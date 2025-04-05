@@ -71,7 +71,7 @@ const SignupForm = () => {
             Sign Up
           </h2>
           {/* Form Fields */}
-          <div className="mb-4 text-black font-medium">
+          <div className="mb-4 text-gray-700 font-medium">
             {error && (
               <span className="my-2 text-red-500 text-sm">
                 {error?.firstName}
@@ -88,7 +88,7 @@ const SignupForm = () => {
               required
             />
           </div>
-          <div className="mb-4 text-black font-medium">
+          <div className="mb-4 text-gray-700 font-medium">
             {error && (
               <span className="my-2 text-red-500 text-sm">
                 {error?.firstName}
@@ -105,7 +105,7 @@ const SignupForm = () => {
               required
             />
           </div>
-          <div className="mb-4 text-black font-medium">
+          <div className="mb-4 text-gray-700 font-medium">
             {error && (
               <span className="my-2 text-red-500 text-sm">{error?.email}</span>
             )}
@@ -120,7 +120,7 @@ const SignupForm = () => {
               required
             />
           </div>
-          <div className="mb-4 text-black font-medium">
+          <div className="mb-4 text-gray-700 font-medium">
             {error && (
               <span className="my-2 text-red-500 text-sm">
                 {error?.password}

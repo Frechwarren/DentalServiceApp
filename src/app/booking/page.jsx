@@ -6,6 +6,7 @@ import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
+import ConfirmationDialog from "@/components/confirmation/ConfirmationDialog";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -65,6 +66,7 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* <ConfirmationDialog /> */}
       {/* Progress Steps */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -148,7 +150,9 @@ export default function BookingPage() {
         {currentStep === 2 && (
           <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
-        {currentStep === 3 && <AppointmentForm onSubmit={handleFormSubmit} pending={pending}/>}
+        {currentStep === 3 && (
+          <AppointmentForm onSubmit={handleFormSubmit} pending={pending} />
+        )}
       </div>
     </div>
   );

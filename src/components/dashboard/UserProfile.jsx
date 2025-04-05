@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState } from "react";
+import Image from "next/image";
 
-const UserProfile = () => {
+const UserProfile = ({ userData }) => {
+  console.log("User Data:", userData);
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    dateOfBirth: '1990-01-01',
-    address: '123 Main St, City, State 12345',
+    name: userData?.user.firstName + " " + userData?.user.lastName,
+    email: userData?.user.email,
+    phone: "+1 (555) 123-4567",
+    dateOfBirth: "1990-01-01",
+    address: "123 Main St, City, State 12345",
     profileImage:
-      'https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
   });
 
   const handleInputChange = (e) => {
@@ -26,7 +27,7 @@ const UserProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would typically send the updated profile data to your backend
-    console.log('Updating profile:', profileData);
+    console.log("Updating profile:", profileData);
     setIsEditing(false);
   };
 
@@ -34,12 +35,14 @@ const UserProfile = () => {
     <div className="container mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Profile Information
+          </h2>
           <button
             onClick={() => setIsEditing(!isEditing)}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            {isEditing ? 'Cancel' : 'Edit Profile'}
+            {isEditing ? "Cancel" : "Edit Profile"}
           </button>
         </div>
 
@@ -62,7 +65,10 @@ const UserProfile = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Full Name
               </label>
               {isEditing ? (
@@ -80,7 +86,10 @@ const UserProfile = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               {isEditing ? (
@@ -93,12 +102,17 @@ const UserProfile = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               ) : (
-                <p className="mt-1 text-sm text-gray-900">{profileData.email}</p>
+                <p className="mt-1 text-sm text-gray-900">
+                  {profileData.email}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Phone Number
               </label>
               {isEditing ? (
@@ -111,12 +125,17 @@ const UserProfile = () => {
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               ) : (
-                <p className="mt-1 text-sm text-gray-900">{profileData.phone}</p>
+                <p className="mt-1 text-sm text-gray-900">
+                  {profileData.phone}
+                </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="dateOfBirth"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Date of Birth
               </label>
               {isEditing ? (
@@ -137,7 +156,10 @@ const UserProfile = () => {
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700"
+            >
               Address
             </label>
             {isEditing ? (
@@ -150,7 +172,9 @@ const UserProfile = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             ) : (
-              <p className="mt-1 text-sm text-gray-900">{profileData.address}</p>
+              <p className="mt-1 text-sm text-gray-900">
+                {profileData.address}
+              </p>
             )}
           </div>
 
