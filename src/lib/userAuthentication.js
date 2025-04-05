@@ -1,5 +1,8 @@
+"use server";
+
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function authUser() {
   const secretKey = process.env.JWT_SECRET;
@@ -23,6 +26,12 @@ export async function authUser() {
     return decoded;
   } catch (error) {
     console.error("Error verifying token:", error);
-    return null;
+    return redirect("/");
   }
+}
+
+export async function logoutUser() {
+  const cookieStore = await cookies();
+  cookieStore.delete("dentalserviceapp");
+  return redirect("/login");
 }

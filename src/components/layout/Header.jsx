@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { authUser } from "@/lib/userAuthentication";
-import { logoutUser } from "@/actions/userController";
+import { authUser, logoutUser } from "@/lib/userAuthentication";
 import NavbarMenu from "./NavbarMenu";
 
 const Header = async () => {
-  const user = await authUser();
+  const authenticatedUser = await authUser();
 
   return (
     <header className="bg-white shadow-sm">
@@ -12,7 +11,7 @@ const Header = async () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link
-              href={user ? "/pages/dashboard" : "/"}
+              href={authenticatedUser ? "/dashboard" : "/"}
               className="flex items-center"
             >
               <span className="text-2xl font-bold text-blue-600">
@@ -23,7 +22,7 @@ const Header = async () => {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            {!user && (
+            {!authenticatedUser && (
               <>
                 <Link
                   href="/"
@@ -31,37 +30,35 @@ const Header = async () => {
                 >
                   Home
                 </Link>
-                <Link
-                  href="/pages/booking"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Book Appointment
-                </Link>
-                <Link
-                  href="/"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Services
-                </Link>
               </>
             )}
-            {user && (
-              <form action={logoutUser}>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
-                >
-                  Logout
-                </button>
-              </form>
+            <Link
+              href="/booking"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Book Appointment
+            </Link>
+            <Link
+              href="#service"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Services
+            </Link>
+            {authenticatedUser && (
+              <button
+                onClick={logoutUser}
+                className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
+              >
+                Logout
+              </button>
             )}
-            {!user && (
-              <Link
-                href="/pages/login"
+            {!authenticatedUser && (
+              <a
+                href="/login"
                 className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
               >
                 Sign In
-              </Link>
+              </a>
             )}
           </div>
 
