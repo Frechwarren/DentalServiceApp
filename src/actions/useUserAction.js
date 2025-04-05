@@ -22,7 +22,6 @@ export async function userLogin(formData) {
   });
 
   const data = await response.json();
-  console.log(data);
 
   return data;
 }
