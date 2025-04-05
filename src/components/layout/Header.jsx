@@ -12,7 +12,7 @@ const Header = async () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link
-              href={user ? "/pages/dashboard" : "/"}
+              href={user ? "/dashboard" : "/"}
               className="flex items-center"
             >
               <span className="text-2xl font-bold text-blue-600">
@@ -32,7 +32,7 @@ const Header = async () => {
                   Home
                 </Link>
                 <Link
-                  href="/pages/booking"
+                  href="/booking"
                   className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Book Appointment
@@ -57,7 +57,7 @@ const Header = async () => {
             )}
             {!user && (
               <Link
-                href="/pages/login"
+                href="/login"
                 className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
               >
                 Sign In
