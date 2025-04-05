@@ -43,10 +43,7 @@ export default function BookingPage() {
   const handleFormSubmit = async (formData) => {
     setBookingData((prev) => ({ ...prev, formData }));
     await bookService({ ...bookingData, formData });
-    console.log("Booking completed:", { ...bookingData, formData });
   };
-
-  console.log("Booking Data:", bookingData);
 
   return (
     <div className="min-h-screen bg-gray-50">
