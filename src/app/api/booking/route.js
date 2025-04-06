@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import Booking from "@/models/Booking";
+import Bookings from "@/models/Booking";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -9,7 +9,7 @@ export async function POST(req) {
     // Connect to the database
     await dbConnect();
 
-    const booked = new Booking(body);
+    const booked = new Bookings(body);
     await booked.save();
 
     return NextResponse.json({

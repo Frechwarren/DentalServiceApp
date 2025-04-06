@@ -55,7 +55,6 @@ export async function getBookedSchedule(userId) {
           throw new Error("An unexpected error occurred. Please try again.");
       }
     }
-
     const data = await response.json();
     return data;
   } catch (error) {

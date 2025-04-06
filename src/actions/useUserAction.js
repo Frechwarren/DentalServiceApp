@@ -31,8 +31,6 @@ export async function userLogin(formData) {
 
 export async function getUser(userId) {
   try {
-    console.log("userId", userId);
-
     const response = await fetch(`/api/users/${userId}`, {
       method: "GET",
     });

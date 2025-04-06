@@ -28,7 +28,7 @@ const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) =>
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSendEmail(e.target);
+    // handleSendEmail(e.target);
     onSubmit(formData);
   };
 
