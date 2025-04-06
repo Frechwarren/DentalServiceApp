@@ -5,39 +5,10 @@ import AppointmentCard from "./AppointmentCard";
 import AppointmentCalendar from "./AppointmentCalendar";
 import { format, parseISO } from "date-fns";
 
-const mockAppointments = [
-  {
-    id: "1",
-    dentist: {
-      name: "Dr. Sarah Wilson",
-      specialization: "General Dentistry",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    date: "2024-03-25",
-    time: "10:00 AM",
-    status: "upcoming",
-    type: "Dental Cleaning",
-  },
-  {
-    id: "2",
-    dentist: {
-      name: "Dr. Michael Chen",
-      specialization: "Orthodontics",
-      image:
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    date: "2024-03-20",
-    time: "2:30 PM",
-    status: "completed",
-    type: "Consultation",
-  },
-];
-
 const AppointmentList = ({ searchQuery = "", appointmentData }) => {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date-asc");
-  const [viewMode, setViewMode] = useState("list");
+  const [viewMode, setViewMode] = useState("card");
   const [selectedDate, setSelectedDate] = useState(null);
 
   const filteredAppointments = appointmentData?.filter((appointment) => {
@@ -116,15 +87,18 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
 
           <div className="flex rounded-md shadow-sm">
             <button
-              onClick={() => setViewMode("list")}
+              onClick={() => {
+                setViewMode("card");
+                setSelectedDate(null);
+              }}
               suppressHydrationWarning={true}
               className={`px-4 py-2 text-sm font-medium rounded-l-md ${
-                viewMode === "list"
+                viewMode === "card"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
-              List
+              Card
             </button>
             <button
               onClick={() => setViewMode("calendar")}
