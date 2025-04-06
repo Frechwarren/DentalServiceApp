@@ -47,7 +47,7 @@ const page = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-wrap gap-2 justify-between items-center mb-6">
             <div className="border-b border-gray-200">
               <nav className="-mb-px flex space-x-8">
                 <button
