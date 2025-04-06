@@ -7,7 +7,7 @@ import dentists from "@/mockData/dentist.json";
 const DentistSelection = ({ onSelectDentist }) => {
   const [selectedDentist, setSelectedDentist] = useState(null);
 
-  const handleDentistSelect = (dentist) => {
+  const handleDentistSelect = (dentist) => { 
     setSelectedDentist(dentist.id);
     onSelectDentist(dentist);
   };
@@ -28,6 +28,7 @@ const DentistSelection = ({ onSelectDentist }) => {
           {dentists.map((dentist) => (
             <div
               key={dentist.id}
+              id="date"
               className={`relative rounded-lg border p-6 cursor-pointer transition-all duration-200 ${
                 selectedDentist === dentist.id
                   ? "border-blue-500 shadow-lg"

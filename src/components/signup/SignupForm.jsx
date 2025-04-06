@@ -67,8 +67,11 @@ const SignupForm = () => {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="flex flex-col gap-8 w-full max-w-full p-6 lg:p-12">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-auto">
+          <div className="flex justify-center items-center mb-4">
+            <h2 className="text-2xl font-bold text-blue-600">DentalCare</h2>
+          </div>
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
-            Sign Up
+            Create an Account
           </h2>
           {/* Form Fields */}
           <div className="mb-4 text-gray-700 font-medium">

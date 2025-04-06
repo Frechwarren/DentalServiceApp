@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const AppointmentForm = ({ onSubmit, pending }) => {
+const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,8 +12,23 @@ const AppointmentForm = ({ onSubmit, pending }) => {
     notes: "",
   });
 
+  // Convert date to readable format
+  const initialData = new Date(bookingData?.date);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+    initialData
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    handleSendEmail(e.target);
     onSubmit(formData);
   };
 
@@ -155,6 +170,22 @@ const AppointmentForm = ({ onSubmit, pending }) => {
               placeholder="Any specific concerns or questions you'd like to discuss with the dentist..."
             />
           </div>
+
+          {/* hidden input */}
+          <input
+            type="text"
+            id="date"
+            name="date"
+            defaultValue={formattedDate}
+            hidden
+          />
+          <input
+            type="text"
+            id="dentist"
+            name="dentist"
+            defaultValue={bookingData?.dentist.name}
+            hidden
+          />
 
           <div>
             <button

@@ -6,7 +6,7 @@ import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
-import ConfirmationDialog from "@/components/confirmation/ConfirmationDialog";
+import { sendEmail } from "@/lib/useSendEmail";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -63,6 +63,14 @@ export default function BookingPage() {
       setPending(false);
     }
   };
+
+  const handleSendEmail = async (target) => {
+    try {
+      await sendEmail(target)
+    } catch (error) {
+      setError("Failed on sending an email. Please try again.");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -145,13 +153,13 @@ export default function BookingPage() {
       {/* Booking Components */}
       <div className="py-8">
         {currentStep === 1 && (
-          <DentistSelection onSelectDentist={handleDentistSelect} />
+          <DentistSelection onSelectDentist={handleDentistSelect}/>
         )}
         {currentStep === 2 && (
           <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
         {currentStep === 3 && (
-          <AppointmentForm onSubmit={handleFormSubmit} pending={pending} />
+          <AppointmentForm onSubmit={handleFormSubmit} bookingData={bookingData} pending={pending} handleSendEmail={handleSendEmail}/>
         )}
       </div>
     </div>
