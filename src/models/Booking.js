@@ -20,6 +20,7 @@ const bookingSchema = new mongoose.Schema({
     reason: { type: String, required: false },
     notes: { type: String, required: false },
   },
+  userId: { type: String, required: true },
 });
 
 const Booking =
