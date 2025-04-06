@@ -1,11 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
-import Booking from "@/models/Booking";
-import Users from "@/models/User";
+import Bookings from "@/models/Booking";
 import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
   const { userId } = await params;
-
   if (!userId) {
     return NextResponse.json(
       {
@@ -18,9 +16,9 @@ export async function GET(req, { params }) {
 
   try {
     await dbConnect();
-    const data = await Booking.find(userId);
+    const data = await Bookings.find({ userId: userId });
 
-    if (!data) {
+    if (data.length === 0) {
       return NextResponse.json({
         success: false,
         message: "No booked schedule was found",

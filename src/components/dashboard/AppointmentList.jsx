@@ -34,13 +34,13 @@ const mockAppointments = [
   },
 ];
 
-const AppointmentList = ({ searchQuery = "" }) => {
+const AppointmentList = ({ searchQuery = "", appointmentData }) => {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date-asc");
   const [viewMode, setViewMode] = useState("list");
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const filteredAppointments = mockAppointments.filter((appointment) => {
+  const filteredAppointments = mockAppointments?.filter((appointment) => {
     const matchesFilter = filter === "all" || appointment.status === filter;
     const matchesSearch =
       searchQuery === "" ||
@@ -52,7 +52,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
       !selectedDate || appointment.date === format(selectedDate, "yyyy-MM-dd");
     return matchesFilter && matchesSearch && matchesDate;
   });
-
+  console.log("filteredAppointments", filteredAppointments);
   const sortedAppointments = [...filteredAppointments].sort((a, b) => {
     switch (sortBy) {
       case "date-asc":
@@ -109,6 +109,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
           <div className="flex rounded-md shadow-sm">
             <button
               onClick={() => setViewMode("list")}
+              suppressHydrationWarning={true}
               className={`px-4 py-2 text-sm font-medium rounded-l-md ${
                 viewMode === "list"
                   ? "bg-blue-600 text-white"
@@ -119,6 +120,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
             </button>
             <button
               onClick={() => setViewMode("calendar")}
+              suppressHydrationWarning={true}
               className={`px-4 py-2 text-sm font-medium rounded-r-md ${
                 viewMode === "calendar"
                   ? "bg-blue-600 text-white"

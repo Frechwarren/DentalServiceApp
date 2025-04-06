@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 
 const UserProfile = ({ userData }) => {
-  console.log("User Data:", userData);
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     name: userData?.user.firstName + " " + userData?.user.lastName,

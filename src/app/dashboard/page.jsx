@@ -1,13 +1,16 @@
 "use client";
 
+import { getBookedSchedule } from "@/actions/useBookServiceAction";
 import { getUser } from "@/actions/useUserAction";
 import AppointmentList from "@/components/dashboard/AppointmentList";
 import UserProfile from "@/components/dashboard/UserProfile";
 import SearchBar from "@/components/layout/SearchBar";
 import { getUserIdFromCookie } from "@/lib/userData";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const page = () => {
+  const [appointment, setAppointment] = useState([]);
   const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("appointments");
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,6 +21,14 @@ const page = () => {
       if (!userId) {
         window.location.href = "/login";
       }
+
+      const data = await getBookedSchedule(userId);
+      if (!data) {
+        console.error("BookedSchedule data not found");
+        return;
+      }
+      setAppointment(data.data);
+
       const userData = await getUser(userId);
       if (!userData) {
         console.error("User data not found");
@@ -71,7 +82,10 @@ const page = () => {
 
           <div className="mt-6">
             {activeTab === "appointments" ? (
-              <AppointmentList searchQuery={searchQuery} />
+              <AppointmentList
+                searchQuery={searchQuery}
+                appointmentData={appointment}
+              />
             ) : (
               <UserProfile userData={userData} />
             )}
