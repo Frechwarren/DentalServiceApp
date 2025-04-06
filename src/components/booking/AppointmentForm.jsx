@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const AppointmentForm = ({ onSubmit }) => {
+const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,8 +12,23 @@ const AppointmentForm = ({ onSubmit }) => {
     notes: "",
   });
 
+  // Convert date to readable format
+  const initialData = new Date(bookingData?.date);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+    initialData
+  );
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    handleSendEmail(e.target);
     onSubmit(formData);
   };
 
@@ -53,7 +68,7 @@ const AppointmentForm = ({ onSubmit }) => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -71,7 +86,7 @@ const AppointmentForm = ({ onSubmit }) => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -89,7 +104,7 @@ const AppointmentForm = ({ onSubmit }) => {
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
 
@@ -107,7 +122,7 @@ const AppointmentForm = ({ onSubmit }) => {
                 required
                 value={formData.dateOfBirth}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             </div>
           </div>
@@ -125,7 +140,7 @@ const AppointmentForm = ({ onSubmit }) => {
               required
               value={formData.reason}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="">Select a reason</option>
               <option value="checkup">Regular Checkup</option>
@@ -151,17 +166,33 @@ const AppointmentForm = ({ onSubmit }) => {
               rows={4}
               value={formData.notes}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Any specific concerns or questions you'd like to discuss with the dentist..."
             />
           </div>
+
+          {/* hidden input */}
+          <input
+            type="text"
+            id="date"
+            name="date"
+            defaultValue={formattedDate}
+            hidden
+          />
+          <input
+            type="text"
+            id="dentist"
+            name="dentist"
+            defaultValue={bookingData?.dentist.name}
+            hidden
+          />
 
           <div>
             <button
               type="submit"
               className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Confirm Booking
+              {pending ? "Booking...." : "Confirm Booking"}
             </button>
           </div>
         </form>

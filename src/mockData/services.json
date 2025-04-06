@@ -1,34 +1,34 @@
 [
   {
-    "id": "1",
+    "id": "1001",
     "title": "General Checkup",
     "description": "Comprehensive dental examination and cleaning to maintain your oral health.",
     "icon": "FaTooth", 
     "price": "$50"
   },
   {
-    "id": "2",
+    "id": "2002",
     "title": "Teeth Whitening",
     "description": "Professional teeth whitening treatment for a brighter, more confident smile.",
     "icon": "FaTeeth",
     "price": "$150"
   },
   {
-    "id": "3",
+    "id": "3003",
     "title": "Dental Implants",
     "description": "Permanent solution for missing teeth with natural-looking results.",
     "icon": "FaTeethOpen",
     "price": "$2,500"
   },
   {
-    "id": "4",
+    "id": "4004",
     "title": "Orthodontics",
     "description": "Straighten your teeth with modern orthodontic treatments.",
     "icon": "FaStethoscope",
     "price": "$3,000"
   },
   {
-    "id": "5",
+    "id": "5005",
     "title": "Cosmetic Dentistry",
     "description": "Enhance your smile with veneers, bonding, and other cosmetic procedures.",
     "icon": "FaSmile",

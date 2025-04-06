@@ -1,7 +1,5 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppointmentFeedback from "./AppointmentFeedback";
 
 const AppointmentCard = ({ appointment }) => {
@@ -23,19 +21,24 @@ const AppointmentCard = ({ appointment }) => {
 
   const handleReschedule = () => {
     setIsRescheduling(true);
-    // Here you would typically open a modal or navigate to a rescheduling page
   };
 
   const handleCancel = () => {
-    // Here you would typically show a confirmation dialog and handle the cancellation
     console.log("Cancelling appointment:", appointment.id);
   };
 
   const handleFeedbackSubmit = async (feedback) => {
-    // Here you would typically send the feedback to your backend
     console.log("Submitting feedback:", feedback);
     setShowFeedback(false);
   };
+
+  // Ensure consistent date formatting
+  const formattedDate = new Date(appointment.date).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -46,8 +49,9 @@ const AppointmentCard = ({ appointment }) => {
               <Image
                 src={appointment.dentist.image}
                 alt={appointment.dentist.name}
-                fill
-                className="object-cover"
+                width={64}
+                height={64}
+                className="object-cover w-full h-full"
               />
             </div>
             <div className="ml-4">
@@ -72,14 +76,7 @@ const AppointmentCard = ({ appointment }) => {
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-medium text-gray-500">Date</p>
-            <p className="mt-1 text-sm text-gray-900">
-              {new Date(appointment.date).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
+            <p className="mt-1 text-sm text-gray-900">{formattedDate}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500">Time</p>
@@ -91,15 +88,17 @@ const AppointmentCard = ({ appointment }) => {
           </div>
         </div>
 
-        {appointment.status === "upcoming" && (
+        {appointment?.status === "upcoming" && (
           <div className="mt-6 flex space-x-4">
             <button
+              suppressHydrationWarning={true}
               onClick={handleReschedule}
               className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               Reschedule
             </button>
             <button
+              suppressHydrationWarning={true}
               onClick={handleCancel}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
@@ -108,9 +107,10 @@ const AppointmentCard = ({ appointment }) => {
           </div>
         )}
 
-        {appointment.status === "completed" && !showFeedback && (
+        {appointment?.status === "completed" && !showFeedback && (
           <div className="mt-6">
             <button
+              suppressHydrationWarning={true}
               onClick={() => setShowFeedback(true)}
               className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >

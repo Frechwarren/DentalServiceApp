@@ -47,7 +47,7 @@ const LoginForm = () => {
           </p>
 
           {/* Email Input */}
-          <div className="mb-6 text-black font-medium">
+          <div className="mb-6 text-gray-700 font-medium">
             {error && (
               <p className="text-center text-red-500 text-sm">{error}</p>
             )}

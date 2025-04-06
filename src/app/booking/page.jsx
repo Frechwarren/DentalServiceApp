@@ -4,6 +4,9 @@ import { useState } from "react";
 import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
+import { bookService } from "@/actions/useBookServiceAction";
+import { useRouter } from "next/navigation";
+import { sendEmail } from "@/lib/useSendEmail";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -28,25 +31,50 @@ export default function BookingPage() {
   });
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
     setCurrentStep(2);
   };
 
-  const handleTimeSelect = (time) => {
-    setBookingData((prev) => ({ ...prev, time }));
+  const handleDateAndTimeSelect = ({ time, date }) => {
+    setBookingData((prev) => ({ ...prev, time, date }));
     setCurrentStep(3);
   };
 
-  const handleFormSubmit = (formData) => {
+  const handleFormSubmit = async (formData) => {
     setBookingData((prev) => ({ ...prev, formData }));
-    // Here you would typically send the data to your backend
-    console.log("Booking completed:", { ...bookingData, formData });
+    setPending(true);
+
+    try {
+      const response = await bookService({ ...bookingData, formData });
+      if (!response.success) {
+        setError(response.errors.message);
+      } else {
+        alert("Booking successful!");
+        router.push("/confirmation");
+      }
+    } catch (error) {
+      setError("Failed to book the service. Please try again.");
+    } finally {
+      setPending(false);
+    }
   };
+
+  const handleSendEmail = async (target) => {
+    try {
+      await sendEmail(target)
+    } catch (error) {
+      setError("Failed on sending an email. Please try again.");
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* <ConfirmationDialog /> */}
       {/* Progress Steps */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -125,12 +153,14 @@ export default function BookingPage() {
       {/* Booking Components */}
       <div className="py-8">
         {currentStep === 1 && (
-          <DentistSelection onSelectDentist={handleDentistSelect} />
+          <DentistSelection onSelectDentist={handleDentistSelect}/>
         )}
         {currentStep === 2 && (
-          <TimeSlotPicker onSelectTime={handleTimeSelect} />
+          <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
-        {currentStep === 3 && <AppointmentForm onSubmit={handleFormSubmit} />}
+        {currentStep === 3 && (
+          <AppointmentForm onSubmit={handleFormSubmit} bookingData={bookingData} pending={pending} handleSendEmail={handleSendEmail}/>
+        )}
       </div>
     </div>
   );
