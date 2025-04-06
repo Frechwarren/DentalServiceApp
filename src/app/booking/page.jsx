@@ -7,8 +7,10 @@ import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
 import { sendEmail } from "@/lib/useSendEmail";
+import getUserId from "@/actions/useUserAction";
 
 export default function BookingPage() {
+  const { userId } = getUserId()
   const [bookingData, setBookingData] = useState({
     dentist: {
       id: "",
@@ -28,12 +30,14 @@ export default function BookingPage() {
       reason: "",
       notes: "",
     },
+    userId: ""
   });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
-  const router = useRouter();
+  // const router = useRouter();
+
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
@@ -50,12 +54,12 @@ export default function BookingPage() {
     setPending(true);
 
     try {
-      const response = await bookService({ ...bookingData, formData });
+      const response = await bookService({ ...bookingData, formData, userId: userId });
       if (!response.success) {
         setError(response.errors.message);
       } else {
         alert("Booking successful!");
-        router.push("/confirmation");
+        // router.push("/confirmation");
       }
     } catch (error) {
       setError("Failed to book the service. Please try again.");
