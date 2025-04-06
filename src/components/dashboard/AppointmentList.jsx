@@ -48,11 +48,17 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
       appointment.type.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // Format the date to YYYY-MM-DD if needed
+    const initialData = new Date(appointment?.date);
+    initialData.setDate(initialData.getDate() + 1);
+    const formattedDate = initialData.toISOString().split("T")[0];
+
     const matchesDate =
-      !selectedDate || appointment.date === format(selectedDate, "yyyy-MM-dd");
+      !selectedDate || formattedDate === format(selectedDate, "yyyy-MM-dd");
     return matchesFilter && matchesSearch && matchesDate;
   });
-  console.log("filteredAppointments", filteredAppointments);
+
   const sortedAppointments = [...filteredAppointments].sort((a, b) => {
     switch (sortBy) {
       case "date-asc":
@@ -85,7 +91,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             suppressHydrationWarning={true}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            className="block w-48 pl-3 pr-10 py-2 text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           >
             <option value="all">All Appointments</option>
             <option value="scheduled">Scheduled</option>
@@ -99,7 +105,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             suppressHydrationWarning={true}
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            className="block w-48 pl-3 pr-10 py-2 text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           >
             <option value="date-asc">Date (Earliest)</option>
             <option value="date-desc">Date (Latest)</option>
@@ -107,6 +113,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             <option value="time-desc">Time (Latest)</option>
             <option value="status">Status</option>
           </select>
+
           <div className="flex rounded-md shadow-sm">
             <button
               onClick={() => setViewMode("list")}
@@ -138,7 +145,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <AppointmentCalendar
-              appointments={mockAppointments}
+              appointments={appointmentData}
               onDateSelect={setSelectedDate}
             />
           </div>
@@ -168,7 +175,10 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             </div>
           ) : (
             sortedAppointments.map((appointment) => (
-              <AppointmentCard key={appointment?._id} appointment={appointment} />
+              <AppointmentCard
+                key={appointment?._id}
+                appointment={appointment}
+              />
             ))
           )}
         </div>

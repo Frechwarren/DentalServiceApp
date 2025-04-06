@@ -52,6 +52,7 @@ const page = () => {
               <nav className="-mb-px flex space-x-8">
                 <button
                   onClick={() => setActiveTab("appointments")}
+                  suppressHydrationWarning={true}
                   className={`${
                     activeTab === "appointments"
                       ? "border-blue-500 text-blue-600"
@@ -62,6 +63,7 @@ const page = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("profile")}
+                  suppressHydrationWarning={true}
                   className={`${
                     activeTab === "profile"
                       ? "border-blue-500 text-blue-600"

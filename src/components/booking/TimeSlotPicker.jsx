@@ -49,7 +49,7 @@ const TimeSlotPicker = ({ onSelectDateAndTime }) => {
               Select Date
             </h3>
             <div className="grid grid-cols-7 gap-2">
-              {[...Array(7)].map((_, index) => {
+              {[...Array(14)].map((_, index) => {
                 const date = new Date();
                 date.setDate(date.getDate() + index);
                 const isSelected =
