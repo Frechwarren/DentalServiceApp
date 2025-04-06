@@ -40,7 +40,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
   const [viewMode, setViewMode] = useState("list");
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const filteredAppointments = mockAppointments?.filter((appointment) => {
+  const filteredAppointments = appointmentData?.filter((appointment) => {
     const matchesFilter = filter === "all" || appointment.status === filter;
     const matchesSearch =
       searchQuery === "" ||
@@ -88,6 +88,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             className="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           >
             <option value="all">All Appointments</option>
+            <option value="scheduled">Scheduled</option>
             <option value="upcoming">Upcoming</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
@@ -151,7 +152,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
               <div className="space-y-4">
                 {sortedAppointments.map((appointment) => (
                   <AppointmentCard
-                    key={appointment.id}
+                    key={appointment?._id}
                     appointment={appointment}
                   />
                 ))}
@@ -167,7 +168,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
             </div>
           ) : (
             sortedAppointments.map((appointment) => (
-              <AppointmentCard key={appointment.id} appointment={appointment} />
+              <AppointmentCard key={appointment?._id} appointment={appointment} />
             ))
           )}
         </div>

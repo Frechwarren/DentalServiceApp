@@ -84,7 +84,7 @@ const page = () => {
             {activeTab === "appointments" ? (
               <AppointmentList
                 searchQuery={searchQuery}
-                appointmentData={appointment}
+                appointmentData={appointment || []}
               />
             ) : (
               <UserProfile userData={userData} />

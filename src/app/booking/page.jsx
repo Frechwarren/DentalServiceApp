@@ -38,7 +38,7 @@ export default function BookingPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
@@ -58,7 +58,7 @@ export default function BookingPage() {
       const response = await bookService({
         ...bookingData,
         formData,
-        status: "schedule",
+        status: "scheduled",
         type: formData.reason,
         userId: userId,
       });
@@ -66,7 +66,7 @@ export default function BookingPage() {
         setError(response.errors.message);
       } else {
         alert("Booking successful!");
-        // router.push("/confirmation");
+        router.push("/dashboard");
       }
     } catch (error) {
       setError("Failed to book the service. Please try again.");
