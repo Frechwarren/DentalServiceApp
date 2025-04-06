@@ -3,8 +3,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import ServiceContainer from "../services/ServiceContainer";
+import { authUser } from "@/lib/userAuthentication";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
+  const [url, setUrl] = useState("/");
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const authenticatedUser = await authUser();
+      if (authenticatedUser) {
+        setUrl("/booking");
+      } else {
+        setUrl("/login");
+      }
+    };
+    checkAuth();
+  }, []);
+
   return (
     <main className="m-h-screen ">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-6 lg:px-8 py-12">
@@ -21,7 +37,7 @@ const HomePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
             <Link
-              href="/booking"
+              href={url}
               className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
             >
               Book Appointment
@@ -80,7 +96,9 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-zinc-600 text-xl font-semibold mb-2">Expert Team</h3>
+              <h3 className="text-zinc-600 text-xl font-semibold mb-2">
+                Expert Team
+              </h3>
               <p className="text-gray-600">
                 Our experienced dentists and staff are dedicated to providing
                 the best care.
@@ -102,7 +120,9 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-zinc-600 text-xl font-semibold mb-2">Modern Facilities</h3>
+              <h3 className="text-zinc-600 text-xl font-semibold mb-2">
+                Modern Facilities
+              </h3>
               <p className="text-gray-600">
                 State-of-the-art equipment and comfortable environment for your
                 dental care.
@@ -124,7 +144,9 @@ const HomePage = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-zinc-600 text-xl font-semibold mb-2">Flexible Hours</h3>
+              <h3 className="text-zinc-600 text-xl font-semibold mb-2">
+                Flexible Hours
+              </h3>
               <p className="text-gray-600">
                 Convenient appointment times to fit your busy schedule.
               </p>
