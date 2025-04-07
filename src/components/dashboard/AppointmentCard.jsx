@@ -2,17 +2,40 @@ import Image from "next/image";
 import { useState } from "react";
 import AppointmentFeedback from "./AppointmentFeedback";
 import { useRouter } from "next/navigation";
+import { sendEmail } from "@/lib/useSendEmail";
+import { confirmBooking, notifyPatient } from "@/actions/useBookServiceAction";
+
+// check if the appointment is upcoming
+function isUpcoming(dateString) {
+  const inputDate = new Date(dateString);
+  const today = new Date();
+
+  // Strip time from both dates
+  const input = new Date(
+    inputDate.getFullYear(),
+    inputDate.getMonth(),
+    inputDate.getDate()
+  );
+  const now = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  const diffInDays = (input - now) / (1000 * 60 * 60 * 24);
+
+  return diffInDays === 1 ? "" : "upcoming";
+}
 
 const AppointmentCard = ({ appointment, userRole }) => {
   const router = useRouter();
   const [showFeedback, setShowFeedback] = useState(false);
+  const [actionStatus, setActionStatus] = useState("");
 
   const getStatusColor = (status) => {
     switch (status) {
       case "upcoming":
-        return "bg-green-100 text-green-800";
-      case "completed":
         return "bg-blue-100 text-blue-800";
+      case "confirmed":
+        return "bg-green-100 text-green-800";
+      case "notified":
+        return "bg-violet-100 text-violet-800";
       case "cancelled":
         return "bg-red-100 text-red-800";
       default:
@@ -21,15 +44,21 @@ const AppointmentCard = ({ appointment, userRole }) => {
   };
 
   const handleReschedule = () => {
-    router.push(  `/booking/reschedule?id=${appointment._id}`);
+    router.push(
+      `/booking/reschedule?id=${appointment._id}`
+    );
   };
 
   const handleCancel = () => {
-    router.push(`/dashboard?open=true&type=cancel&id=${appointment._id}`);
+    router.push(
+      `/dashboard?open=true&type=cancel&id=${appointment._id}&userRole=${userRole.role}`
+    );
   };
 
   const handleDelete = async () => {
-    router.push(`/dashboard?open=true&type=delete&id=${appointment._id}`);
+    router.push(
+      `/dashboard?open=true&type=delete&id=${appointment._id}&userRole=${userRole.role}`
+    );
   };
 
   const handleFeedbackSubmit = async (feedback) => {
@@ -37,6 +66,31 @@ const AppointmentCard = ({ appointment, userRole }) => {
     setShowFeedback(false);
   };
 
+  const handleNotifyPatient = async (e) => {
+    e.preventDefault();
+    setActionStatus("notified");
+    try {
+      await notifyPatient({ bookingId: appointment._id, status: "notified" });
+      await sendEmail(e.target);
+    } catch (error) {
+      setError("Failed on sending an email. Please try again.");
+    }
+    setTimeout(() => {
+      setActionStatus("");
+    }, 3000);
+  };
+
+  const handleConfirmAppointment = async (e) => {
+    e.preventDefault();
+    setActionStatus("confirmed");
+    await confirmBooking({
+      bookingId: appointment._id,
+      status: "confirmed",
+    });
+    setTimeout(() => {
+      setActionStatus("");
+    }, 3000);
+  };
   // Ensure consistent date formatting
   const formattedDate = new Date(appointment.date).toLocaleDateString("en-US", {
     weekday: "long",
@@ -44,6 +98,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
     month: "long",
     day: "numeric",
   });
+
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -73,8 +128,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
               appointment.status
             )}`}
           >
-            {appointment.status.charAt(0).toUpperCase() +
-              appointment.status.slice(1)}
+            {appointment.status}
           </span>
         </div>
 
@@ -92,6 +146,20 @@ const AppointmentCard = ({ appointment, userRole }) => {
             <p className="mt-1 text-sm text-gray-900">{appointment.type}</p>
           </div>
         </div>
+        <div
+          className="flex mt-4 justify-end items-end"
+          hidden={actionStatus === ""}
+        >
+          <p
+            className={`text-sm font-medium ${
+              actionStatus === "notified" ? "text-violet-500" : "text-green-500"
+            }`}
+          >
+            {actionStatus === "notified"
+              ? "Notified patient via email"
+              : "Appointment confirmed"}
+          </p>
+        </div>
 
         <div className="mt-6 flex justify-end items-center space-x-4">
           <button
@@ -100,6 +168,52 @@ const AppointmentCard = ({ appointment, userRole }) => {
             className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Reschedule
+          </button>
+          {/* hidden input */}
+          <form onSubmit={handleNotifyPatient}>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              defaultValue={appointment?.email}
+              hidden
+            />
+            <input
+              type="text"
+              id="reason"
+              name="reason"
+              defaultValue={appointment?.type}
+              hidden
+            />
+            <input
+              type="text"
+              id="date"
+              name="date"
+              defaultValue={formattedDate}
+              hidden
+            />
+            <input
+              type="text"
+              id="dentist"
+              name="dentist"
+              defaultValue={appointment?.dentist.name}
+              hidden
+            />
+            <button
+              suppressHydrationWarning={true}
+              type="submit"
+              hidden={userRole?.role !== "Admin"}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-violet-800 hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Notify Patient
+            </button>
+          </form>
+          <button
+            suppressHydrationWarning={true}
+            onClick={handleConfirmAppointment}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Confirm
           </button>
           <button
             suppressHydrationWarning={true}

@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const RescheduleDate = ({ onSelectDateAndTime, onReschedule }) => {
+const RescheduleDate = ({ onSelectDateAndTime, onReschedule, admin }) => {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
 
@@ -32,6 +34,10 @@ const RescheduleDate = ({ onSelectDateAndTime, onReschedule }) => {
 
   const handleReschedule = () => {
     onReschedule();
+  };
+  console.log(admin);
+  const handleCancel = () => {
+    router.push("/");
   };
 
   return (
@@ -110,6 +116,12 @@ const RescheduleDate = ({ onSelectDateAndTime, onReschedule }) => {
               ))}
             </div>
             <div className="flex justify-center">
+              <button
+                onClick={handleCancel}
+                className="mt-4 bg-white text-black px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleReschedule}
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"

@@ -69,7 +69,9 @@ export async function getBookedSchedule(userId) {
 
 export async function getAllBookings() {
   try {
-    const response = await fetch("/api/booking");
+    const response = await fetch("/api/booking", {
+      method: "GET",
+    });
     if (!response.ok) {
       const errorData = await response.json();
       switch (response.status) {
@@ -186,5 +188,81 @@ export async function deleteBooking(data) {
   } catch (error) {
     console.error("Error deleting booking:", error);
     throw new Error("Failed to delete booking. Please try again.");
+  }
+}
+
+export async function notifyPatient(bookingData) {
+  try {
+    const response = await fetch(
+      `/api/booking/notifyPatient/${bookingData.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: bookingData.status }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      switch (response.status) {
+        case 400:
+          throw new Error(
+            errorData.message || "Validation error. Please check your input."
+          );
+        case 500:
+          throw new Error("Internal server error. Please try again later.");
+        default:
+          throw new Error("An unexpected error occurred. Please try again.");
+      }
+    }
+    const data = await response.json();
+    return NextResponse.json({
+      message: "Booking cancelled",
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    throw new Error("Failed to cancel booking. Please try again.");
+  }
+}
+
+export async function confirmBooking(bookingData) {
+  try {
+    const response = await fetch(
+      `/api/booking/confirmation/${bookingData.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: bookingData.status }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      switch (response.status) {
+        case 400:
+          throw new Error(
+            errorData.message || "Validation error. Please check your input."
+          );
+        case 500:
+          throw new Error("Internal server error. Please try again later.");
+        default:
+          throw new Error("An unexpected error occurred. Please try again.");
+      }
+    }
+    const data = await response.json();
+    return NextResponse.json({
+      message: "Booking cancelled",
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    throw new Error("Failed to cancel booking. Please try again.");
   }
 }

@@ -6,12 +6,12 @@ const ServiceCard = ({ title, description, icon: Icon, price }) => {
       </div>
       <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
       <p className="text-gray-600 mb-4">{description}</p>
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <span className="text-blue-600 font-semibold">{price}</span>
         <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
           Book Now
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

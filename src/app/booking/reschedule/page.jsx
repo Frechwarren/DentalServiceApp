@@ -5,6 +5,7 @@ import {
   rescheduleBooking,
 } from "@/actions/useBookServiceAction";
 import RescheduleDate from "@/components/booking/reschedule/RescheduleDate";
+import { authUser } from "@/lib/userAuthentication";
 import { getUserIdFromCookie } from "@/lib/userData";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -37,8 +38,8 @@ const page = () => {
   };
 
   const handleReschedule = async () => {
-    const userId = await getUserIdFromCookie();
-    if (!userId) {
+    const token = await authUser();
+    if (!token) {
       window.location.href = "/login";
     }
     const data = await rescheduleBooking(appointmentId, dateAndTime);
@@ -46,7 +47,11 @@ const page = () => {
       console.error("Rescheduling data not found");
       return;
     }
-    window.location.href = "/dashboard";
+    if (token.role === "Admin") {
+      window.location.href = "/admin";
+    } else {
+      window.location.href = "/dashboard";
+    }
   };
 
   return (

@@ -95,7 +95,7 @@ const page = () => {
                 <AppointmentList
                   searchQuery={searchQuery}
                   appointmentData={appointment}
-                  userRole={userData?.role}
+                  userRole={userData?.data?.user}
                 />
               ) : (
                 <UserProfile userData={userData} />

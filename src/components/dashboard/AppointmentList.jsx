@@ -30,7 +30,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData, userRole }) => {
     return matchesFilter && matchesSearch && matchesDate;
   });
 
-  const sortedAppointments = [...filteredAppointments].sort((a, b) => {
+  const sortedAppointments = filteredAppointments?.sort((a, b) => {
     switch (sortBy) {
       case "date-asc":
         return new Date(a.date).getTime() - new Date(b.date).getTime();

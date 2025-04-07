@@ -29,11 +29,12 @@ const page = () => {
       setAppointment(data.data);
 
       const userData = await getUser(userId);
+
       if (!userData) {
         console.error("User data not found");
         return;
       }
-      setUserData(userData.user);
+      setUserData(userData);
     };
     fetchUserData();
   }, []);
@@ -41,6 +42,7 @@ const page = () => {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -86,7 +88,7 @@ const page = () => {
               <AppointmentList
                 searchQuery={searchQuery}
                 appointmentData={appointment || []}
-                userRole={userData?.role}
+                userRole={userData?.data?.user}
               />
             ) : (
               <UserProfile userData={userData} />
