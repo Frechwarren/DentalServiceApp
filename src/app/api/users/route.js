@@ -27,6 +27,7 @@ export async function POST(req) {
     lastName,
     email,
     password: hashedPassword,
+    role: "User",
   });
   await user.save();
 

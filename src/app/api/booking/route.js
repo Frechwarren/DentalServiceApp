@@ -16,6 +16,7 @@ export async function POST(req) {
       message: "Booking created",
       success: true,
       status: 201,
+      data: booked,
     });
   } catch (error) {
     console.error("Error creating booking:", error);
@@ -30,6 +31,30 @@ export async function POST(req) {
       );
     }
 
+    return NextResponse.json(
+      {
+        message: "An unexpected error occurred. Please try again later.",
+        success: false,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    await dbConnect();
+
+    const bookings = await Bookings.find();
+
+    return NextResponse.json({
+      message: "Bookings fetched",
+      success: true,
+      data: bookings,
+      status: 200,
+    });
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
     return NextResponse.json(
       {
         message: "An unexpected error occurred. Please try again later.",

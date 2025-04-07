@@ -30,9 +30,13 @@ export async function POST(req) {
   }
 
   const secretKey = process.env.JWT_SECRET;
-  const token = jwt.sign({ userId: existingUser._id }, secretKey, {
-    expiresIn: "24h",
-  });
+  const token = jwt.sign(
+    { userId: existingUser._id, role: existingUser.role },
+    secretKey,
+    {
+      expiresIn: "24h",
+    }
+  );
 
   const cookieStore = await cookies();
   cookieStore.set("dentalserviceapp", token, {
@@ -46,5 +50,8 @@ export async function POST(req) {
   return NextResponse.json({
     success: true,
     message: "Log in successfully",
+    data: {
+      role: existingUser.role,
+    },
   });
 }

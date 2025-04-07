@@ -52,9 +52,39 @@ export async function GET(req, { params }) {
 }
 
 export async function PUT(req, { params }) {
-  const { userId } = params;
+  const { userId } = await params;
+  const { dateAndTime } = await req.json();
   console.log(userId);
-  return NextResponse.json({ message: "User updated" });
+  console.log(dateAndTime);
+  if (!userId || !dateAndTime) {
+    return NextResponse.json({
+      message: "User ID and dateAndTime are required",
+    });
+  }
+
+  try {
+    await dbConnect();
+    const data = await Bookings.findByIdAndUpdate(userId, {
+      time: dateAndTime.time,
+      date: dateAndTime.date,
+    });
+    console.log(data);
+    if (!data) {
+      return NextResponse.json({
+        message: "Booking not found",
+      });
+    }
+
+    return NextResponse.json({
+      message: "Booking updated",
+      data,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      message: "Error updating booking",
+      error,
+    });
+  }
 }
 
 export async function DELETE(req, { params }) {

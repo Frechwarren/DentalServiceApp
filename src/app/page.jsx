@@ -12,7 +12,13 @@ export default function App() {
     const checkAuth = async () => {
       const authenticatedUser = await authUser();
       if (authenticatedUser) {
-        router.push("/dashboard");
+        if (authenticatedUser.role === "Admin") {
+          router.push(`/admin`, {
+            params: { userId: authenticatedUser.userId },
+          });
+        } else {
+          router.push("/dashboard");
+        }
       } else {
         router.push("/");
       }

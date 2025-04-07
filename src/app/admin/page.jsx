@@ -1,12 +1,11 @@
 "use client";
 
-import { getBookedSchedule } from "@/actions/useBookServiceAction";
+import { getAllBookings } from "@/actions/useBookServiceAction";
 import { getUser } from "@/actions/useUserAction";
 import AppointmentList from "@/components/dashboard/AppointmentList";
 import UserProfile from "@/components/dashboard/UserProfile";
 import SearchBar from "@/components/layout/SearchBar";
 import { getUserIdFromCookie } from "@/lib/userData";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const page = () => {
@@ -22,7 +21,7 @@ const page = () => {
         window.location.href = "/login";
       }
 
-      const data = await getBookedSchedule(userId);
+      const data = await getAllBookings();
       if (!data) {
         console.error("BookedSchedule data not found");
         return;
@@ -34,7 +33,7 @@ const page = () => {
         console.error("User data not found");
         return;
       }
-      setUserData(userData);
+      setUserData(userData.user);
     };
     fetchUserData();
   }, []);

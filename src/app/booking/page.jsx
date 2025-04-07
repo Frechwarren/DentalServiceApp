@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
 import { sendEmail } from "@/lib/useSendEmail";
-import getUserId from "@/actions/useUserAction";
+import { getUserIdFromCookie } from "@/lib/userData";
 
 export default function BookingPage() {
-  const { userId } = getUserId();
   const [bookingData, setBookingData] = useState({
     dentist: {
       id: "",
@@ -40,12 +39,28 @@ export default function BookingPage() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
+  useEffect(() => {
+    const getUserId = async () => {
+      const userId = await getUserIdFromCookie();
+      if (!userId) {
+        window.location.href = "/login";
+      }
+      setBookingData((prev) => ({ ...prev, userId }));
+    };
+    getUserId();
+  }, []);
+
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
     setCurrentStep(2);
   };
 
   const handleDateAndTimeSelect = ({ time, date }) => {
+    setBookingData((prev) => ({ ...prev, time, date }));
+    setCurrentStep(3);
+  };
+
+  const handleRescheduleDateAndTimeSelect = ({ time, date }) => {
     setBookingData((prev) => ({ ...prev, time, date }));
     setCurrentStep(3);
   };
@@ -60,7 +75,7 @@ export default function BookingPage() {
         formData,
         status: "scheduled",
         type: formData.reason,
-        userId: userId,
+        userId: bookingData.userId,
       });
       if (!response.success) {
         setError(response.errors.message);
@@ -167,7 +182,9 @@ export default function BookingPage() {
           <DentistSelection onSelectDentist={handleDentistSelect} />
         )}
         {currentStep === 2 && (
-          <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
+          <>
+            <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
+          </>
         )}
         {currentStep === 3 && (
           <AppointmentForm
