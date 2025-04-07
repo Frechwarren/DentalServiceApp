@@ -6,11 +6,11 @@ import Image from "next/image";
 const UserProfile = ({ userData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
-    name: userData?.user.firstName + " " + userData?.user.lastName,
-    email: userData?.user.email,
-    phone: userData?.user.phone,
-    dateOfBirth: userData?.user.dateOfBirth,
-    address: userData?.user.address,
+    name: userData?.firstName + " " + userData?.lastName,
+    email: userData?.email,
+    phone: userData?.phone,
+    dateOfBirth: userData?.dateOfBirth,
+    address: userData?.address,
     profileImage:
       "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
   });

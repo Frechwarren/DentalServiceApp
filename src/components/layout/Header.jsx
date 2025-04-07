@@ -9,12 +9,14 @@ import { useRouter } from "next/navigation";
 const Header = () => {
   const { route } = useRouter();
   const [authenticate, setAuthenticate] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       const authenticatedUser = await authUser();
       if (authenticatedUser) {
         setAuthenticate(true);
+        setUserRole(authenticatedUser.role);
       } else {
         setAuthenticate(false);
       }
@@ -35,7 +37,13 @@ const Header = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <a
-              href={authenticate ? "/dashboard" : "/"}
+              href={
+                userRole === "Admin"
+                  ? "/admin"
+                  : authenticate
+                  ? "/dashboard"
+                  : "/"
+              }
               className="flex items-center"
             >
               <span className="text-2xl font-bold text-blue-600">
@@ -46,24 +54,29 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link
-              href={authenticate ? "/booking" : "/login"}
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Book Appointment
-            </Link>
-            <Link
-              href="#service"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Services
-            </Link>
-            <Link
-              href="#contactInfo"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Contact Us
-            </Link>
+            {userRole !== "Admin" && (
+              <>
+                <Link
+                  href={authenticate ? "/booking" : "/login"}
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Book Appointment
+                </Link>
+                <Link
+                  href="#service"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Services
+                </Link>
+                <Link
+                  href="#contactInfo"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Contact Us
+                </Link>
+              </>
+            )}
+
             {authenticate && (
               <button
                 onClick={handleLogoutUser}
@@ -72,6 +85,7 @@ const Header = () => {
                 Logout
               </button>
             )}
+
             {!authenticate && (
               <Link
                 href="/login"

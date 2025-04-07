@@ -20,6 +20,7 @@ const SignupForm = () => {
     lastName: "",
     email: "",
     password: "",
+    role: "User",
   });
   const [error, setError] = useState(null);
   const [pending, setPending] = useState(false);

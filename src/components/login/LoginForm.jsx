@@ -25,7 +25,11 @@ const LoginForm = () => {
     if (!response.success) {
       setError(response.errors.message);
     } else {
-      window.location.href = "/dashboard";
+      if (response.data.role === "Admin") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/dashboard";
+      }
     }
     setPending(false);
   };

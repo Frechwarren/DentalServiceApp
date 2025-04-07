@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import AppointmentFeedback from "./AppointmentFeedback";
+import { useRouter } from "next/navigation";
 
-const AppointmentCard = ({ appointment }) => {
-  const [isRescheduling, setIsRescheduling] = useState(false);
+const AppointmentCard = ({ appointment, userRole }) => {
+  const router = useRouter();
   const [showFeedback, setShowFeedback] = useState(false);
 
   const getStatusColor = (status) => {
@@ -20,7 +21,7 @@ const AppointmentCard = ({ appointment }) => {
   };
 
   const handleReschedule = () => {
-    setIsRescheduling(true);
+    router.push("/booking/reschedule");
   };
 
   const handleCancel = () => {
@@ -88,24 +89,22 @@ const AppointmentCard = ({ appointment }) => {
           </div>
         </div>
 
-        {appointment?.status === "upcoming" && (
-          <div className="mt-6 flex space-x-4">
-            <button
-              suppressHydrationWarning={true}
-              onClick={handleReschedule}
-              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Reschedule
-            </button>
-            <button
-              suppressHydrationWarning={true}
-              onClick={handleCancel}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
+        <div className="mt-6 flex justify-end items-center space-x-4">
+          <button
+            suppressHydrationWarning={true}
+            onClick={handleReschedule}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Reschedule
+          </button>
+          <button
+            suppressHydrationWarning={true}
+            onClick={handleCancel}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          >
+            Cancel
+          </button>
+        </div>
 
         {appointment?.status === "completed" && !showFeedback && (
           <div className="mt-6">

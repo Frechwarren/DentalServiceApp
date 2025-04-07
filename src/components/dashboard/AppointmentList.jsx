@@ -5,7 +5,7 @@ import AppointmentCard from "./AppointmentCard";
 import AppointmentCalendar from "./AppointmentCalendar";
 import { format, parseISO } from "date-fns";
 
-const AppointmentList = ({ searchQuery = "", appointmentData }) => {
+const AppointmentList = ({ searchQuery = "", appointmentData, userRole }) => {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date-asc");
   const [viewMode, setViewMode] = useState("card");
@@ -152,6 +152,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData }) => {
               <AppointmentCard
                 key={appointment?._id}
                 appointment={appointment}
+                userRole={userRole}
               />
             ))
           )}
