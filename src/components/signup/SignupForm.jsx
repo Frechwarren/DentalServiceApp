@@ -43,24 +43,16 @@ const SignupForm = () => {
     setError(null);
 
     try {
-      signupSchema.parse(formData); // This will throw an error if validation fails
-
       const response = await signup(formData);
-      if (!response.success) {
+      console.log(response);
+      if (response.success === false) {
         setError(response);
       } else {
-        alert("User registered successfully!");
-        router.push("/login");
+        router.push("/login?success=true");
       }
-    } catch (validationError) {
-      if (validationError instanceof z.ZodError) {
-        const errorMessages = validationError.flatten().fieldErrors;
-        setError(errorMessages);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-    } finally {
-      setPending(false);
+    } catch (error) {
+      console.error("Error signing up:", error);
+      setError(error.message);
     }
   };
 
@@ -111,7 +103,9 @@ const SignupForm = () => {
           </div>
           <div className="mb-4 text-gray-700 font-medium">
             {error && (
-              <span className="my-2 text-red-500 text-sm">{error?.message}</span>
+              <span className="my-2 text-red-500 text-sm">
+                {error?.message}
+              </span>
             )}
             <input
               type="email"

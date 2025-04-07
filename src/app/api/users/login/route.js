@@ -10,7 +10,8 @@ export async function POST(req) {
   const { email, password } = await req.json();
   const failObject = NextResponse.json({
     success: false,
-    errors: { message: "Invalid email or password" },
+    message: "Invalid email or password",
+    role: ""
   });
   try {
     // Connect to the database
@@ -28,7 +29,7 @@ export async function POST(req) {
       existingUser.password
     );
     if (!isPasswordCorrect) {
-      return failObject;
+      return {...failObject, role: existingUser?.role};
     }
 
     const secretKey = process.env.JWT_SECRET;

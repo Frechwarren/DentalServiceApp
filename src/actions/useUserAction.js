@@ -11,13 +11,12 @@ export async function signup(formData) {
     });
     const data = await response.json();
 
-    if (!response.success) {
+    if (!data.success) {
       return {
         success: false,
         message: data.message,
       };
     }
-
 
     return {
       success: true,
@@ -39,14 +38,11 @@ export async function userLogin(formData) {
       body: JSON.stringify(formData),
     });
 
-    if (!response.success) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.message || "Failed to log in. Please try again."
-      );
-    }
-
     const data = await response.json();
+
+    if (response.success === "false") {
+      return data;
+    }
 
     return data;
   } catch (error) {
