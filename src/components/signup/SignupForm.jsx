@@ -95,7 +95,7 @@ const SignupForm = () => {
           <div className="mb-4 text-gray-700 font-medium">
             {error && (
               <span className="my-2 text-red-500 text-sm">
-                {error?.firstName}
+                {error?.lastName}
               </span>
             )}
             <input
@@ -111,7 +111,7 @@ const SignupForm = () => {
           </div>
           <div className="mb-4 text-gray-700 font-medium">
             {error && (
-              <span className="my-2 text-red-500 text-sm">{error?.email}</span>
+              <span className="my-2 text-red-500 text-sm">{error?.message}</span>
             )}
             <input
               type="email"

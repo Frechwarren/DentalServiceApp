@@ -9,17 +9,20 @@ export async function signup(formData) {
       },
       body: JSON.stringify(formData),
     });
-
-    if (!response.success) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.message || "Failed to sign up. Please try again."
-      );
-    }
-
     const data = await response.json();
 
-    return data;
+    if (!response.success) {
+      return {
+        success: false,
+        message: data.message,
+      };
+    }
+
+
+    return {
+      success: true,
+      data: data,
+    };
   } catch (error) {
     console.error("Error signing up:", error);
     throw new Error("Failed to sign up. Please try again.");
