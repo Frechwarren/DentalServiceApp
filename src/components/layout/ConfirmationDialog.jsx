@@ -1,26 +1,24 @@
 "use client";
 import { cancelBooking, deleteBooking } from "@/actions/useBookServiceAction";
-import { useRouter } from "next/navigation";
 
 const ConfirmationDialog = ({ open, type, id }) => {
-  const router = useRouter();
 
   const handleCancelAppointment = async () => {
     const res = await cancelBooking({ bookingId: id, status: "cancelled" });
     if (res.ok) {
-      router.push(`/dashboard`);
+      window.location.href = "/dashboard";
     }
   };
 
   const handleDeleteAppointment = async () => {
     const res = await deleteBooking({ appointmentId: id });
     if (res.ok) {
-      router.push(`/dashboard`);
+      window.location.href = "/dashboard";
     }
   };
 
   const handleClose = () => {
-    router.push(`/dashboard`);
+    window.location.href = "/dashboard";
   };
 
   return (

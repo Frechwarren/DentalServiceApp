@@ -6,10 +6,12 @@ import {
 } from "@/actions/useBookServiceAction";
 import RescheduleDate from "@/components/booking/reschedule/RescheduleDate";
 import { getUserIdFromCookie } from "@/lib/userData";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const page = () => {
+  const searchParams = useSearchParams();
+  const appointmentId = searchParams.get("id");
   const router = useRouter();
   const [appointment, setAppointment] = useState(null);
   const [dateAndTime, setDateAndTime] = useState(null);
@@ -40,7 +42,7 @@ const page = () => {
     if (!userId) {
       window.location.href = "/login";
     }
-    const data = await rescheduleBooking(appointment[0]?._id, dateAndTime);
+    const data = await rescheduleBooking(appointmentId, dateAndTime);
     if (!data) {
       console.error("Rescheduling data not found");
       return;

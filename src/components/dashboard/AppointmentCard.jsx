@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AppointmentFeedback from "./AppointmentFeedback";
 import { useRouter } from "next/navigation";
-import useShowDialog from "@/hooks/showDialog";
 
 const AppointmentCard = ({ appointment, userRole }) => {
   const router = useRouter();
@@ -22,7 +21,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
   };
 
   const handleReschedule = () => {
-    router.push("/booking/reschedule");
+    router.push(  `/booking/reschedule?id=${appointment._id}`);
   };
 
   const handleCancel = () => {

@@ -6,7 +6,7 @@ import AppointmentList from "@/components/dashboard/AppointmentList";
 import UserProfile from "@/components/dashboard/UserProfile";
 import SearchBar from "@/components/layout/SearchBar";
 import { getUserIdFromCookie } from "@/lib/userData";
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ConfirmationDialog from "@/components/layout/ConfirmationDialog";
 
