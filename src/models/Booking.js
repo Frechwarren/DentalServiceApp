@@ -22,10 +22,10 @@ const bookingSchema = new mongoose.Schema({
   },
   status: { type: String, required: true },
   type: { type: String, required: true },
+  email: { type: String, required: true },
   userId: {
-    type: mongoose.Schema.Types.ObjectId, // Reference to the User model
-    ref: "User",
-    required: true,
+    type: String,
+    required: false,
   },
 });
 

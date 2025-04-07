@@ -1,32 +1,55 @@
 import { getUserIdFromCookie } from "@/lib/userData";
-import { useEffect, useState } from "react";
 
 export async function signup(formData) {
-  const response = await fetch("/api/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
+  try {
+    const response = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-  const data = await response.json();
+    if (!response.success) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Failed to sign up. Please try again."
+      );
+    }
 
-  return data;
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error signing up:", error);
+    throw new Error("Failed to sign up. Please try again.");
+  }
 }
 
 export async function userLogin(formData) {
-  const response = await fetch("/api/users/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  });
+  try {
+    const response = await fetch("/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-  const data = await response.json();
+    if (!response.success) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message || "Failed to log in. Please try again."
+      );
+    }
 
-  return data;
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw new Error("Failed to log in. Please try again.");
+  }
 }
 
 export async function getUser(userId) {
@@ -53,7 +76,10 @@ export async function getUser(userId) {
 
     const data = await response.json();
 
-    return data;
+    return {
+      success: true,
+      data: data,
+    };
   } catch (error) {
     console.error("Error booking service:", error);
     throw new Error(
@@ -62,18 +88,10 @@ export async function getUser(userId) {
   }
 }
 
-export default function getUserId() {
-  const [userId, setUser] = useState(null);
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const userId = await getUserIdFromCookie();
-      if (!userId) {
-        window.location.href = "/login";
-      }
-      setUser(userId);
-    };
-    fetchUserData();
-  }, []);
-
-  return { userId };
+export async function getUserId() {
+  const userId = await getUserIdFromCookie();
+  if (!userId) {
+    window.location.href = "/login";
+  }
+  return userId;
 }

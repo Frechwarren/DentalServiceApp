@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 export async function bookService(bookingData) {
   try {
-    console.log("bookingData", bookingData);
-
     const response = await fetch("/api/booking", {
       method: "POST",
       headers: {
@@ -11,7 +9,6 @@ export async function bookService(bookingData) {
       },
       body: JSON.stringify(bookingData),
     });
-
     if (!response.ok) {
       const errorData = await response.json();
       switch (response.status) {
@@ -29,6 +26,7 @@ export async function bookService(bookingData) {
     }
 
     const data = await response.json();
+
     return data;
   } catch (error) {
     console.error("Error booking service:", error);

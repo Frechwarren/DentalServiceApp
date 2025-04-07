@@ -5,22 +5,10 @@ import Link from "next/link";
 import ServiceContainer from "../services/ServiceContainer";
 import { authUser } from "@/lib/userAuthentication";
 import { useEffect, useState } from "react";
+import SuccessDialog from "@/components/layout/SuccessDialog";
+import { useSearchParams } from "next/navigation";
 
 const HomePage = () => {
-  const [url, setUrl] = useState("/");
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authenticatedUser = await authUser();
-      if (authenticatedUser) {
-        setUrl("/booking");
-      } else {
-        setUrl("/login");
-      }
-    };
-    checkAuth();
-  }, []);
-
   return (
     <main className="m-h-screen ">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-6 lg:px-8 py-12">
@@ -37,7 +25,7 @@ const HomePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
             <Link
-              href={url}
+              href="/booking"
               className="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
             >
               Book Appointment

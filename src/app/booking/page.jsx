@@ -5,9 +5,8 @@ import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { sendEmail } from "@/lib/useSendEmail";
-import { getUserIdFromCookie } from "@/lib/userData";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -29,6 +28,7 @@ export default function BookingPage() {
       reason: "",
       notes: "",
     },
+    email: "",
     status: "",
     type: "",
     userId: "",
@@ -39,16 +39,16 @@ export default function BookingPage() {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const getUserId = async () => {
-      const userId = await getUserIdFromCookie();
-      if (!userId) {
-        window.location.href = "/login";
-      }
-      setBookingData((prev) => ({ ...prev, userId }));
-    };
-    getUserId();
-  }, []);
+  // useEffect(() => {
+  //   const getUserId = async () => {
+  //     const userId = await getUserIdFromCookie();
+  //     if (!userId) {
+  //       window.location.href = "/login";
+  //     }
+  //     setBookingData((prev) => ({ ...prev, userId }));
+  //   };
+  //   getUserId();
+  // }, []);
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
@@ -75,10 +75,16 @@ export default function BookingPage() {
         formData,
         status: "scheduled",
         type: formData.reason,
-        userId: bookingData.userId,
+        email: formData.email,
+        userId:
+          bookingData?.userId === ""
+            ? Math.floor(Math.random() * Date.now()).toString()
+            : bookingData?.userId,
       });
       if (!response.success) {
         setError(response.errors.message);
+      } else if (bookingData?.userId === "") {
+        router.push("/login?open=true&type=signup&id=null");
       } else {
         alert("Booking successful!");
         router.push("/dashboard");
@@ -100,7 +106,6 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* <ConfirmationDialog /> */}
       {/* Progress Steps */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
