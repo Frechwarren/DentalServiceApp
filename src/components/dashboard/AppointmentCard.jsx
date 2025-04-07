@@ -44,9 +44,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
   };
 
   const handleReschedule = () => {
-    router.push(
-      `/booking/reschedule?id=${appointment._id}`
-    );
+    router.push(`/booking/reschedule?id=${appointment._id}`);
   };
 
   const handleCancel = () => {
@@ -77,7 +75,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
     }
     setTimeout(() => {
       setActionStatus("");
-    }, 3000);
+    }, 1500);
   };
 
   const handleConfirmAppointment = async (e) => {
@@ -89,7 +87,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
     });
     setTimeout(() => {
       setActionStatus("");
-    }, 3000);
+    }, 1500);
   };
   // Ensure consistent date formatting
   const formattedDate = new Date(appointment.date).toLocaleDateString("en-US", {
@@ -98,7 +96,6 @@ const AppointmentCard = ({ appointment, userRole }) => {
     month: "long",
     day: "numeric",
   });
-
 
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -208,13 +205,15 @@ const AppointmentCard = ({ appointment, userRole }) => {
               Notify Patient
             </button>
           </form>
-          <button
-            suppressHydrationWarning={true}
-            onClick={handleConfirmAppointment}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Confirm
-          </button>
+          {userRole?.role === "Admin" && (
+            <button
+              suppressHydrationWarning={true}
+              onClick={handleConfirmAppointment}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Confirm
+            </button>
+          )}
           <button
             suppressHydrationWarning={true}
             onClick={

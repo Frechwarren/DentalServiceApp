@@ -146,12 +146,12 @@ const AppointmentList = ({ searchQuery = "", appointmentData, userRole }) => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
-          {sortedAppointments.length === 0 ? (
+          {sortedAppointments?.length === 0 ? (
             <div className="col-span-2 text-center py-12">
               <p className="text-gray-500">No appointments found</p>
             </div>
           ) : (
-            sortedAppointments.map((appointment) => (
+            sortedAppointments?.map((appointment) => (
               <AppointmentCard
                 key={appointment?._id}
                 appointment={appointment}

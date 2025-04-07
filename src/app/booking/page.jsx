@@ -7,6 +7,7 @@ import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter, useSearchParams } from "next/navigation";
 import { sendEmail } from "@/lib/useSendEmail";
+import { authUser } from "@/lib/userAuthentication";
 
 export default function BookingPage() {
   const [bookingData, setBookingData] = useState({
@@ -34,21 +35,19 @@ export default function BookingPage() {
     userId: "",
   });
 
+  const [token, setToken] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const getUserId = async () => {
-  //     const userId = await getUserIdFromCookie();
-  //     if (!userId) {
-  //       window.location.href = "/login";
-  //     }
-  //     setBookingData((prev) => ({ ...prev, userId }));
-  //   };
-  //   getUserId();
-  // }, []);
+  useEffect(() => {
+    const getUserId = async () => {
+      const userId = await authUser();
+      setToken(userId);
+    };
+    getUserId();
+  }, []);
 
   const handleDentistSelect = (dentist) => {
     setBookingData((prev) => ({ ...prev, dentist }));
@@ -77,13 +76,13 @@ export default function BookingPage() {
         type: formData.reason,
         email: formData.email,
         userId:
-          bookingData?.userId === ""
+          token?.userId === ""
             ? Math.floor(Math.random() * Date.now()).toString()
-            : bookingData?.userId,
+            : token?.userId,
       });
       if (!response.success) {
         setError(response.errors.message);
-      } else if (bookingData?.userId === "") {
+      } else if (token?.userId === "") {
         router.push("/login?open=true&type=signup&id=null");
       } else {
         alert("Booking successful!");

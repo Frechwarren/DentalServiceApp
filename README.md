@@ -4,6 +4,9 @@ A modern dental service application that allows users to book appointments, mana
 
 ---
 
+## **Watch the short walk through video of the project**
+https://www.loom.com/share/90c6f92f2afe4c89b7881dd0cc71f2e3?sid=108fce6d-27fa-49c0-9b2d-1c07d330141e
+
 ## **Features**
 - User authentication (Sign Up, Login, Logout).
 - Role-based access (Admin and User).

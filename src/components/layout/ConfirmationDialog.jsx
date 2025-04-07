@@ -2,31 +2,18 @@
 import { cancelBooking, deleteBooking } from "@/actions/useBookServiceAction";
 
 const ConfirmationDialog = ({ open, type, id, userRole }) => {
-
   const handleCancelAppointment = async () => {
-    const res = await cancelBooking({ bookingId: id, status: "cancelled" });
-    if (res.ok) {
-      if (userRole === "Admin") {
-        window.location.href = "/admin";
-      } else {
-        window.location.href = "/dashboard";
-      }
-    }
+    await cancelBooking({ bookingId: id, status: "cancelled" });
+    window.location.href = "/dashboard";
   };
 
   const handleDeleteAppointment = async () => {
-    const res = await deleteBooking({ appointmentId: id });
-    if (res.ok) {
-      if (userRole === "Admin") {
-        window.location.href = "/admin";
-      } else {
-        window.location.href = "/dashboard";
-      }
-    }
+    await deleteBooking({ appointmentId: id });
+    window.location.href = "/admin";
   };
 
   const handleClose = () => {
-    window.location.href = "/dashboard";
+    window.location.href = "/";
   };
 
   return (
