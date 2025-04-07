@@ -1,29 +1,53 @@
+"use client";
+
 import Link from "next/link";
 import { authUser, logoutUser } from "@/lib/userAuthentication";
 import NavbarMenu from "./NavbarMenu";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-const Header = async () => {
-  const authenticatedUser = await authUser();
+const Header = () => {
+  const { route } = useRouter();
+  const [authenticate, setAuthenticate] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const authenticatedUser = await authUser();
+      if (authenticatedUser) {
+        setAuthenticate(true);
+      } else {
+        setAuthenticate(false);
+      }
+    };
+    checkAuth();
+  }, [route]);
+
+  const handleLogoutUser = async () => {
+    const response = await logoutUser();
+    if (response?.success) {
+      window.location.href = "/";
+    }
+  };
 
   return (
     <header className="bg-white shadow-sm">
       <nav className="w-screen mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
-            <Link
-              href={authenticatedUser ? "/dashboard" : "/"}
+            <a
+              href={authenticate ? "/dashboard" : "/"}
               className="flex items-center"
             >
               <span className="text-2xl font-bold text-blue-600">
                 DentalCare
               </span>
-            </Link>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <Link
-              href="/booking"
+              href={authenticate ? "/booking" : "/login"}
               className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
             >
               Book Appointment
@@ -40,27 +64,27 @@ const Header = async () => {
             >
               Contact Us
             </Link>
-            {authenticatedUser && (
+            {authenticate && (
               <button
-                onClick={logoutUser}
+                onClick={handleLogoutUser}
                 className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
               >
                 Logout
               </button>
             )}
-            {!authenticatedUser && (
-              <a
+            {!authenticate && (
+              <Link
                 href="/login"
                 className="bg-blue-600 text-white px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-700"
               >
                 Sign In
-              </a>
+              </Link>
             )}
           </div>
 
           {/* Mobile menu button */}
 
-          <NavbarMenu />
+          <NavbarMenu authenticate={authenticate} />
         </div>
       </nav>
     </header>

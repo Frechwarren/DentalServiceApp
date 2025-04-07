@@ -33,5 +33,5 @@ export async function authUser() {
 export async function logoutUser() {
   const cookieStore = await cookies();
   cookieStore.delete("dentalserviceapp");
-  return redirect("/login");
+  return { success: true };
 }

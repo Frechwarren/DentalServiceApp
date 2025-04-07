@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const NavbarMenu = () => {
+const NavbarMenu = ({ authenticate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -56,13 +56,13 @@ const NavbarMenu = () => {
               Home
             </Link>
             <Link
-              href="/"
+              href={authenticate ? "/booking" : "/login"}
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
             >
               Book Appointment
             </Link>
             <Link
-              href="/"
+              href="#service"
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
             >
               Service

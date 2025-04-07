@@ -32,7 +32,7 @@ const AppointmentCalendar = ({ appointments, onDateSelect }) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
+    <div className="bg-white text-gray-800 p-4 rounded-lg shadow">
       <Calendar
         onChange={handleDateClick}
         value={selectedDate}

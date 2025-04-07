@@ -5,42 +5,13 @@ import AppointmentCard from "./AppointmentCard";
 import AppointmentCalendar from "./AppointmentCalendar";
 import { format, parseISO } from "date-fns";
 
-const mockAppointments = [
-  {
-    id: "1",
-    dentist: {
-      name: "Dr. Sarah Wilson",
-      specialization: "General Dentistry",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    date: "2024-03-25",
-    time: "10:00 AM",
-    status: "upcoming",
-    type: "Dental Cleaning",
-  },
-  {
-    id: "2",
-    dentist: {
-      name: "Dr. Michael Chen",
-      specialization: "Orthodontics",
-      image:
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    },
-    date: "2024-03-20",
-    time: "2:30 PM",
-    status: "completed",
-    type: "Consultation",
-  },
-];
-
-const AppointmentList = ({ searchQuery = "" }) => {
+const AppointmentList = ({ searchQuery = "", appointmentData }) => {
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date-asc");
-  const [viewMode, setViewMode] = useState("list");
+  const [viewMode, setViewMode] = useState("card");
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const filteredAppointments = mockAppointments.filter((appointment) => {
+  const filteredAppointments = appointmentData?.filter((appointment) => {
     const matchesFilter = filter === "all" || appointment.status === filter;
     const matchesSearch =
       searchQuery === "" ||
@@ -48,8 +19,14 @@ const AppointmentList = ({ searchQuery = "" }) => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
       appointment.type.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // Format the date to YYYY-MM-DD if needed
+    const initialData = new Date(appointment?.date);
+    initialData.setDate(initialData.getDate() + 1);
+    const formattedDate = initialData.toISOString().split("T")[0];
+
     const matchesDate =
-      !selectedDate || appointment.date === format(selectedDate, "yyyy-MM-dd");
+      !selectedDate || formattedDate === format(selectedDate, "yyyy-MM-dd");
     return matchesFilter && matchesSearch && matchesDate;
   });
 
@@ -80,14 +57,15 @@ const AppointmentList = ({ searchQuery = "" }) => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center space-x-4">
-          <h2 className="text-2xl font-bold text-gray-900">My Appointments</h2>
+          <h2 className="text-1xl lg:text-2xl font-bold text-gray-900">My Appointments</h2>
           <select
             suppressHydrationWarning={true}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            className="block w-48 pl-3 pr-10 py-2 text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           >
             <option value="all">All Appointments</option>
+            <option value="scheduled">Scheduled</option>
             <option value="upcoming">Upcoming</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
@@ -98,7 +76,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
             suppressHydrationWarning={true}
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+            className="block w-48 pl-3 pr-10 py-2 text-gray-900 border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
           >
             <option value="date-asc">Date (Earliest)</option>
             <option value="date-desc">Date (Latest)</option>
@@ -106,19 +84,25 @@ const AppointmentList = ({ searchQuery = "" }) => {
             <option value="time-desc">Time (Latest)</option>
             <option value="status">Status</option>
           </select>
+
           <div className="flex rounded-md shadow-sm">
             <button
-              onClick={() => setViewMode("list")}
+              onClick={() => {
+                setViewMode("card");
+                setSelectedDate(null);
+              }}
+              suppressHydrationWarning={true}
               className={`px-4 py-2 text-sm font-medium rounded-l-md ${
-                viewMode === "list"
+                viewMode === "card"
                   ? "bg-blue-600 text-white"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
-              List
+              Card
             </button>
             <button
               onClick={() => setViewMode("calendar")}
+              suppressHydrationWarning={true}
               className={`px-4 py-2 text-sm font-medium rounded-r-md ${
                 viewMode === "calendar"
                   ? "bg-blue-600 text-white"
@@ -135,7 +119,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <AppointmentCalendar
-              appointments={mockAppointments}
+              appointments={appointmentData}
               onDateSelect={setSelectedDate}
             />
           </div>
@@ -149,7 +133,7 @@ const AppointmentList = ({ searchQuery = "" }) => {
               <div className="space-y-4">
                 {sortedAppointments.map((appointment) => (
                   <AppointmentCard
-                    key={appointment.id}
+                    key={appointment?._id}
                     appointment={appointment}
                   />
                 ))}
@@ -165,7 +149,10 @@ const AppointmentList = ({ searchQuery = "" }) => {
             </div>
           ) : (
             sortedAppointments.map((appointment) => (
-              <AppointmentCard key={appointment.id} appointment={appointment} />
+              <AppointmentCard
+                key={appointment?._id}
+                appointment={appointment}
+              />
             ))
           )}
         </div>

@@ -20,9 +20,16 @@ const bookingSchema = new mongoose.Schema({
     reason: { type: String, required: false },
     notes: { type: String, required: false },
   },
+  status: { type: String, required: true },
+  type: { type: String, required: true },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId, // Reference to the User model
+    ref: "User",
+    required: true,
+  },
 });
 
-const Booking =
-  mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
+const Bookings =
+  mongoose.models.Bookings || mongoose.model("Bookings", bookingSchema);
 
-export default Booking;
+export default Bookings;

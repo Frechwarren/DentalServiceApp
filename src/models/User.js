@@ -1,3 +1,4 @@
+import { Phone } from "lucide-react";
 import mongoose from "mongoose";
 
 // Define the user schema
@@ -18,6 +19,22 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  phone: {
+    type: String,
+    required: false,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: false,
+  },
+  address: {
+    type: String,
+    required: false,
+  },
+  profileImage: {
+    type: String,
+    required: false,
   },
 });
 

@@ -3,10 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { userLogin } from "@/actions/useUserAction";
-import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +25,7 @@ const LoginForm = () => {
     if (!response.success) {
       setError(response.errors.message);
     } else {
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     }
     setPending(false);
   };

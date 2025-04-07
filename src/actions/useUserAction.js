@@ -1,3 +1,6 @@
+import { getUserIdFromCookie } from "@/lib/userData";
+import { useEffect, useState } from "react";
+
 export async function signup(formData) {
   const response = await fetch("/api/users", {
     method: "POST",
@@ -28,8 +31,6 @@ export async function userLogin(formData) {
 
 export async function getUser(userId) {
   try {
-    console.log("userId", userId);
-    
     const response = await fetch(`/api/users/${userId}`, {
       method: "GET",
     });
@@ -59,4 +60,20 @@ export async function getUser(userId) {
       error.message || "Failed to book the service. Please try again."
     );
   }
+}
+
+export default function getUserId() {
+  const [userId, setUser] = useState(null);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = await getUserIdFromCookie();
+      if (!userId) {
+        window.location.href = "/login";
+      }
+      setUser(userId);
+    };
+    fetchUserData();
+  }, []);
+
+  return { userId };
 }

@@ -7,8 +7,10 @@ import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
 import { sendEmail } from "@/lib/useSendEmail";
+import getUserId from "@/actions/useUserAction";
 
 export default function BookingPage() {
+  const { userId } = getUserId();
   const [bookingData, setBookingData] = useState({
     dentist: {
       id: "",
@@ -28,6 +30,9 @@ export default function BookingPage() {
       reason: "",
       notes: "",
     },
+    status: "",
+    type: "",
+    userId: "",
   });
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -50,12 +55,18 @@ export default function BookingPage() {
     setPending(true);
 
     try {
-      const response = await bookService({ ...bookingData, formData });
+      const response = await bookService({
+        ...bookingData,
+        formData,
+        status: "scheduled",
+        type: formData.reason,
+        userId: userId,
+      });
       if (!response.success) {
         setError(response.errors.message);
       } else {
         alert("Booking successful!");
-        router.push("/confirmation");
+        router.push("/dashboard");
       }
     } catch (error) {
       setError("Failed to book the service. Please try again.");
@@ -66,11 +77,11 @@ export default function BookingPage() {
 
   const handleSendEmail = async (target) => {
     try {
-      await sendEmail(target)
+      await sendEmail(target);
     } catch (error) {
       setError("Failed on sending an email. Please try again.");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -153,13 +164,18 @@ export default function BookingPage() {
       {/* Booking Components */}
       <div className="py-8">
         {currentStep === 1 && (
-          <DentistSelection onSelectDentist={handleDentistSelect}/>
+          <DentistSelection onSelectDentist={handleDentistSelect} />
         )}
         {currentStep === 2 && (
           <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
         )}
         {currentStep === 3 && (
-          <AppointmentForm onSubmit={handleFormSubmit} bookingData={bookingData} pending={pending} handleSendEmail={handleSendEmail}/>
+          <AppointmentForm
+            onSubmit={handleFormSubmit}
+            bookingData={bookingData}
+            pending={pending}
+            handleSendEmail={handleSendEmail}
+          />
         )}
       </div>
     </div>

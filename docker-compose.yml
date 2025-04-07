@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Dockerfile for the Next.js app
+    ports:
+      - "3000:3000"  # Expose the Next.js app on port 3000
+    environment:
+      - NODE_ENV=development  # Change to production in production
