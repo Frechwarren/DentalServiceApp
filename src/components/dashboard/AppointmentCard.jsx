@@ -29,6 +29,10 @@ const AppointmentCard = ({ appointment, userRole }) => {
     router.push(`/dashboard?open=true&type=cancel&id=${appointment._id}`);
   };
 
+  const handleDelete = async () => {
+    router.push(`/dashboard?open=true&type=delete&id=${appointment._id}`);
+  };
+
   const handleFeedbackSubmit = async (feedback) => {
     console.log("Submitting feedback:", feedback);
     setShowFeedback(false);
@@ -100,10 +104,12 @@ const AppointmentCard = ({ appointment, userRole }) => {
           </button>
           <button
             suppressHydrationWarning={true}
-            onClick={handleCancel}
+            onClick={
+              appointment.status === "upcoming" ? handleCancel : handleDelete
+            }
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
-            Cancel
+            {appointment.status === "upcoming" ? "Cancel" : "Delete"}
           </button>
         </div>
 

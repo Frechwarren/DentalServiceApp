@@ -1,12 +1,19 @@
 "use client";
-import { cancelBooking } from "@/actions/useBookServiceAction";
+import { cancelBooking, deleteBooking } from "@/actions/useBookServiceAction";
 import { useRouter } from "next/navigation";
 
 const ConfirmationDialog = ({ open, type, id }) => {
   const router = useRouter();
-  console.log(open, type, id);
+
   const handleCancelAppointment = async () => {
     const res = await cancelBooking({ bookingId: id, status: "cancelled" });
+    if (res.ok) {
+      router.push(`/dashboard`);
+    }
+  };
+
+  const handleDeleteAppointment = async () => {
+    const res = await deleteBooking({ appointmentId: id });
     if (res.ok) {
       router.push(`/dashboard`);
     }
@@ -55,13 +62,15 @@ const ConfirmationDialog = ({ open, type, id }) => {
                     className="text-base font-semibold text-gray-900"
                     id="modal-title"
                   >
-                    Deactivate account
+                    {type === "delete"
+                      ? "Delete Appointment"
+                      : "Cancel Appointment"}
                   </h3>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Are you sure you want to deactivate your account? All of
-                      your data will be permanently removed. This action cannot
-                      be undone.
+                      {type === "delete"
+                        ? "Are you sure you want to delete this appointment? This action cannot be undone."
+                        : "Are you sure you want to cancel this appointment? This action cannot be undone."}
                     </p>
                   </div>
                 </div>
@@ -69,11 +78,15 @@ const ConfirmationDialog = ({ open, type, id }) => {
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                onClick={handleCancelAppointment}
+                onClick={
+                  type === "delete"
+                    ? handleDeleteAppointment
+                    : handleCancelAppointment
+                }
                 type="button"
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
-                Cancel Appointment
+                {type === "delete" ? "Delete" : "Cancel"}
               </button>
               <button
                 onClick={handleClose}

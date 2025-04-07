@@ -165,3 +165,28 @@ export async function cancelBooking(bookingData) {
     throw new Error("Failed to cancel booking. Please try again.");
   }
 }
+
+export async function deleteBooking(data) {
+  console.log(data);
+  try {
+    const response = await fetch(
+      `/api/booking/deleteSchedule/${data.appointmentId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to delete booking.");
+    }
+
+    return {
+      message: "Booking deleted",
+      ok: true,
+    };
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    throw new Error("Failed to delete booking. Please try again.");
+  }
+}
