@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  role: {
+    type: String,
+    required: false,
+  },
 });
 
 // Create the User model
