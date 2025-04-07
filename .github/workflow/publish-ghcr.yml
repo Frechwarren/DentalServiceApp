@@ -1,22 +1,15 @@
 name: Docker Image CI for GHCR
 
 on:
-  push:
-    branches:
-      - main  # Specify the branch to trigger the workflow
+  push
 
 jobs:
   building_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Corrected the syntax for using actions
-
-      - name: Log in to GHCR
-        run: |
-          echo "${{ secrets.FCD_KEY }}" | docker login ghcr.io -u frechwarren --password-stdin
-
+      - user: action/checkout@v3
       - name: Build and push the image
         run: |
+          docker login --username frechwarren --password ${{ secrets.FCD_KEY }} ghcr.io
           docker build . --tag ghcr.io/frechwarren/dental-service-app:latest
           docker push ghcr.io/frechwarren/dental-service-app:latest
