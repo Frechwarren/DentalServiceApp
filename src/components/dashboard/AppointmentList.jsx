@@ -57,7 +57,9 @@ const AppointmentList = ({ searchQuery = "", appointmentData, userRole }) => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center space-x-4">
-          <h2 className="text-1xl lg:text-2xl font-bold text-gray-900">My Appointments</h2>
+          <h2 className="text-1xl lg:text-2xl font-bold text-gray-900">
+            My Appointments
+          </h2>
           <select
             suppressHydrationWarning={true}
             value={filter}
@@ -66,6 +68,7 @@ const AppointmentList = ({ searchQuery = "", appointmentData, userRole }) => {
           >
             <option value="all">All Appointments</option>
             <option value="scheduled">Scheduled</option>
+            <option value="rescheduled">Rescheduled</option>
             <option value="upcoming">Upcoming</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>

@@ -6,13 +6,12 @@ import {
 } from "@/actions/useBookServiceAction";
 import RescheduleDate from "@/components/booking/reschedule/RescheduleDate";
 import { getUserIdFromCookie } from "@/lib/userData";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const page = () => {
   const searchParams = useSearchParams();
   const appointmentId = searchParams.get("id");
-  const router = useRouter();
   const [appointment, setAppointment] = useState(null);
   const [dateAndTime, setDateAndTime] = useState(null);
 
@@ -47,7 +46,7 @@ const page = () => {
       console.error("Rescheduling data not found");
       return;
     }
-    router.push("/dashboard");
+    window.location.href = "/dashboard";
   };
 
   return (

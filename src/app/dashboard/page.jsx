@@ -94,7 +94,7 @@ const page = () => {
               {activeTab === "appointments" ? (
                 <AppointmentList
                   searchQuery={searchQuery}
-                  appointmentData={appointment || []}
+                  appointmentData={appointment}
                   userRole={userData?.role}
                 />
               ) : (

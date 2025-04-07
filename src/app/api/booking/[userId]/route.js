@@ -66,6 +66,7 @@ export async function PUT(req, { params }) {
     const data = await Bookings.findByIdAndUpdate(userId, {
       time: dateAndTime.time,
       date: dateAndTime.date,
+      status: "rescheduled",
     });
 
     if (!data) {
