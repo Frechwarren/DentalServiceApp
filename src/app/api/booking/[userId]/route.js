@@ -54,8 +54,7 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   const { userId } = await params;
   const { dateAndTime } = await req.json();
-  console.log(userId);
-  console.log(dateAndTime);
+
   if (!userId || !dateAndTime) {
     return NextResponse.json({
       message: "User ID and dateAndTime are required",
@@ -68,7 +67,7 @@ export async function PUT(req, { params }) {
       time: dateAndTime.time,
       date: dateAndTime.date,
     });
-    console.log(data);
+
     if (!data) {
       return NextResponse.json({
         message: "Booking not found",
@@ -85,10 +84,4 @@ export async function PUT(req, { params }) {
       error,
     });
   }
-}
-
-export async function DELETE(req, { params }) {
-  const { userId } = params;
-  console.log(userId);
-  return NextResponse.json({ message: "User deleted" });
 }

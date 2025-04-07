@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import AppointmentFeedback from "./AppointmentFeedback";
 import { useRouter } from "next/navigation";
+import useShowDialog from "@/hooks/showDialog";
 
 const AppointmentCard = ({ appointment, userRole }) => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const AppointmentCard = ({ appointment, userRole }) => {
   };
 
   const handleCancel = () => {
-    console.log("Cancelling appointment:", appointment.id);
+    router.push(`/dashboard?open=true&type=cancel&id=${appointment._id}`);
   };
 
   const handleFeedbackSubmit = async (feedback) => {

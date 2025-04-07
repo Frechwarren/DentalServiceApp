@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function bookService(bookingData) {
   try {
     console.log("bookingData", bookingData);
@@ -96,12 +98,12 @@ export async function rescheduleBooking(bookingId, dateAndTime) {
     const response = await fetch(`/api/booking/${bookingId}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json", 
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ dateAndTime }),  
+      body: JSON.stringify({ dateAndTime }),
     });
 
-    if (!response.ok) { 
+    if (!response.ok) {
       const errorData = await response.json();
       switch (response.status) {
         case 400:
@@ -109,7 +111,9 @@ export async function rescheduleBooking(bookingId, dateAndTime) {
             errorData.message || "Validation error. Please check your input."
           );
         case 401:
-          throw new Error("Unauthorized. Please log in to reschedule a booking.");
+          throw new Error(
+            "Unauthorized. Please log in to reschedule a booking."
+          );
         case 500:
           throw new Error("Internal server error. Please try again later.");
         default:
@@ -124,5 +128,40 @@ export async function rescheduleBooking(bookingId, dateAndTime) {
   }
 }
 
+export async function cancelBooking(bookingData) {
+  try {
+    const response = await fetch(
+      `/api/booking/cancelSchedule/${bookingData.bookingId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: bookingData.status }),
+      }
+    );
 
-
+    if (!response.ok) {
+      const errorData = await response.json();
+      switch (response.status) {
+        case 400:
+          throw new Error(
+            errorData.message || "Validation error. Please check your input."
+          );
+        case 500:
+          throw new Error("Internal server error. Please try again later.");
+        default:
+          throw new Error("An unexpected error occurred. Please try again.");
+      }
+    }
+    const data = await response.json();
+    return NextResponse.json({
+      message: "Booking cancelled",
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    throw new Error("Failed to cancel booking. Please try again.");
+  }
+}

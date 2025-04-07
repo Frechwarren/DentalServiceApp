@@ -1,12 +1,16 @@
 "use client";
 
-const ConfirmationDialog = () => {
+import { useParams } from "next/navigation";
+
+const SuccessDialog = () => {
+  const { isOpen } = useParams();
   return (
     <div
       className="relative z-10"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
+      hidden={true}
     >
       <div
         className="fixed inset-0 bg-gray-500/75 transition-opacity"
@@ -72,4 +76,4 @@ const ConfirmationDialog = () => {
   );
 };
 
-export default ConfirmationDialog;
+export default SuccessDialog;
