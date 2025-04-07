@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dental-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dental-service
+  template:
+    metadata:
+      labels:
+        app: dental-service
+    spec:
+      containers:
+        - name: dental-service
+          image: ghcr.io/frechwarren/dental-service-app:latest
+          ports:
+            - containerPort: 3000 # or whatever your app uses
