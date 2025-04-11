@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { userLogin } from "@/actions/useUserAction";
-import { useRouter } from "next/navigation";
-import { ModalContext } from "@/components/context/ModalProvide";
 
 const LoginForm = () => {
-  const { openSnackBarModal } = useContext(ModalContext);
-  const router = useRouter();
-
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
@@ -37,10 +32,6 @@ const LoginForm = () => {
       window.location.href = "/admin";
     }
     setPending(false);
-  };
-
-  const handleLogIn = () => {
-    openSnackBarModal(false);
   };
 
   return (
@@ -89,7 +80,7 @@ const LoginForm = () => {
             {/* Login Button */}
             <div>
               <button
-                onClick={handleLogIn}
+                onClick={handleSubmit}
                 className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 {pending ? "Logging in..." : "Login"}

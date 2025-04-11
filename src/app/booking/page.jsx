@@ -5,11 +5,12 @@ import DentistSelection from "@/components/booking/DentistSelection";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import AppointmentForm from "@/components/booking/AppointmentForm";
 import { bookService } from "@/actions/useBookServiceAction";
-import { useRouter, useSearchParams } from "next/navigation";
-import { sendEmail } from "@/lib/useSendEmail";
+import { useRouter } from "next/navigation";
 import { authUser } from "@/lib/userAuthentication";
+import { modalTriggerContext } from "@/components/context/ModalProvide";
 
 export default function BookingPage() {
+  const { openModalComponent } = modalTriggerContext();
   const [bookingData, setBookingData] = useState({
     dentist: {
       id: "",
@@ -85,21 +86,12 @@ export default function BookingPage() {
       } else if (token?.userId === "") {
         router.push("/login?open=true&type=signup&id=null");
       } else {
-        alert("Booking successful!");
-        router.push("/dashboard");
+        openModalComponent(false);
       }
     } catch (error) {
       setError("Failed to book the service. Please try again.");
     } finally {
       setPending(false);
-    }
-  };
-
-  const handleSendEmail = async (target) => {
-    try {
-      await sendEmail(target);
-    } catch (error) {
-      setError("Failed on sending an email. Please try again.");
     }
   };
 
@@ -195,7 +187,6 @@ export default function BookingPage() {
             onSubmit={handleFormSubmit}
             bookingData={bookingData}
             pending={pending}
-            handleSendEmail={handleSendEmail}
           />
         )}
       </div>

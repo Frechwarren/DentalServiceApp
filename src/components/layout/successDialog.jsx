@@ -1,28 +1,39 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { ModalContext } from "../context/ModalProvide";
 
 const SuccessDialog = () => {
-  const params = useSearchParams();
-  const open = params.get("dialog") || false;
+  const { openModal, openModalComponent } = useContext(ModalContext);
+
   const router = useRouter();
 
   let id = "asdasd";
 
   const handleConfirm = () => {
     router.push("/dashboard");
+    openModalComponent(true);
   };
 
   const handleLogin = () => {
     router.push("/login");
+    openModalComponent(true);
   };
 
   const handleCancel = () => {
     router.push("/");
+    openModalComponent(true);
   };
 
   return (
-    <dialog open={open === "true"}>
+    <div
+      className="relative"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+      hidden={openModal}
+    >
       <div
         className="fixed inset-0 bg-gray-500/75 transition-opacity"
         aria-hidden="true"
@@ -69,7 +80,7 @@ const SuccessDialog = () => {
           </div>
         </div>
       </div>
-    </dialog>
+    </div>
   );
 };
 

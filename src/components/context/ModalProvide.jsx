@@ -1,19 +1,25 @@
 "use client";
 
-import { createContext } from "react";
-import { useShowDialog } from "@/components/dialog/SnackBarDialog";
+import { createContext, useContext } from "react";
+// import { useShowDialog } from "@/components/dialog/SnackBarDialog";
+import { useShowDialog } from "@/hooks/showDialog";
+import SuccessDialog from "../layout/SuccessDialog";
 
 export const ModalContext = createContext({
-  openSnackBarModal: () => {},
+  openModal: true,
+  openModalComponent: () => {},
 });
 
 export default function ModalProvider({ children }) {
-  const { openSnackBarModal, ShowSnackBarModal } = useShowDialog();
+  const { openModal, openModalComponent } = useShowDialog();
 
   return (
-    <ModalContext.Provider value={{ openSnackBarModal }}>
-      <ShowSnackBarModal />
+    <ModalContext.Provider value={{ openModal, openModalComponent }}>
+      {/* <ShowSnackBarModal /> */}
+      <SuccessDialog />
       {children}
     </ModalContext.Provider>
   );
 }
+
+export const modalTriggerContext = () => useContext(ModalContext);
