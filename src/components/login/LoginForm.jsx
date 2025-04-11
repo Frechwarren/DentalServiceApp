@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { userLogin } from "@/actions/useUserAction";
+import Image from "next/image";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -35,11 +36,20 @@ const LoginForm = () => {
   };
 
   return (
-    <>
-      {/* <SuccessDialog open={success} router={router} /> */}
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="flex flex-col gap-8 w-full max-w-full p-6 lg:p-12">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-auto">
+    <div className="flex items-center min-h-screen bg-white">
+      <section className="hidden h-screen items-center justify-center lg:flex lg:justify-center lg:w-1/2">
+        <Image
+          src="/images/homePageImage.jpg"
+          alt="login"
+          height={1000}
+          width={1000}
+          className="object-cover h-screen backdrop-blur-3xl z-10"
+          priority
+        />
+      </section>
+      <section className="w-screen items-center justify-center p-5 lg:p-10 lg:flex lg:justify-center lg:w-1/2">
+        <div className="flex flex-col justify-center item-center bg-white lg:w-[500px] w-auto">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
               Log In
             </h2>
@@ -81,15 +91,15 @@ const LoginForm = () => {
             <div>
               <button
                 onClick={handleSubmit}
-                className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-2xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 {pending ? "Logging in..." : "Login"}
               </button>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 
