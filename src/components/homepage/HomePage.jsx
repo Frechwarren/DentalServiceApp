@@ -3,30 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import ServiceContainer from "../services/ServiceContainer";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { authUser } from "@/lib/userAuthentication";
 
 const HomePage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authenticatedUser = await authUser();
-      if (authenticatedUser) {
-        if (authenticatedUser.role === "Admin") {
-          router.push(`/admin`);
-        } else {
-          router.push("/dashboard");
-        }
-      } else {
-        router.push("/");
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
   return (
     <main className="m-h-screen ">
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-6 lg:px-8 py-12">

@@ -28,8 +28,6 @@ const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) =>
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // handleSendEmail(e.target);
-
     onSubmit(formData);
   };
 
@@ -171,22 +169,6 @@ const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) =>
               placeholder="Any specific concerns or questions you'd like to discuss with the dentist..."
             />
           </div>
-
-          {/* hidden input */}
-          <input
-            type="text"
-            id="date"
-            name="date"
-            defaultValue={formattedDate}
-            hidden
-          />
-          <input
-            type="text"
-            id="dentist"
-            name="dentist"
-            defaultValue={bookingData?.dentist.name}
-            hidden
-          />
 
           <div>
             <button
