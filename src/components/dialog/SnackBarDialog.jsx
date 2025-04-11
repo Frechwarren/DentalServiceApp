@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { modalTriggerContext } from "../context/ModalProvide";
 
-
-function SnackBarDialog({ open, onClose }) {
+const SnackBarDialog = () => {
+  const { openModal, openModalHandler } = modalTriggerContext();
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose(true);
+      openModalHandler(true);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -19,7 +20,7 @@ function SnackBarDialog({ open, onClose }) {
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
-      hidden={open}
+      hidden={openModal}
     >
       <div className="fixed w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -46,17 +47,6 @@ function SnackBarDialog({ open, onClose }) {
       </div>
     </div>
   );
-}
+};
 
-
-export function useShowDialog() {
-  const [openSnackBar, setOpenSnackBar] = useState(true);
-  const openSnackBarModal = (open) => {
-    setOpenSnackBar(open);
-  };
-
-  const SnackBarComponent = () => {
-    return <SnackBarDialog open={openSnackBar} onClose={setOpenSnackBar} />;
-  };
-  return { openSnackBarModal, ShowSnackBarModal: SnackBarComponent };
-}
+export default SnackBarDialog;

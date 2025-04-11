@@ -4,8 +4,8 @@ import { useState } from "react";
 
 export function useShowDialog() {
   const [openModal, setOpenModal] = useState(true);
-  const openModalComponent = (open) => {
+  const openModalHandler = (open) => {
     setOpenModal(open);
   };
-  return { openModal, openModalComponent };
+  return { openModal, openModalHandler };
 }

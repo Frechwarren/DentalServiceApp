@@ -10,7 +10,7 @@ import { authUser } from "@/lib/userAuthentication";
 import { modalTriggerContext } from "@/components/context/ModalProvide";
 
 export default function BookingPage() {
-  const { openModalComponent } = modalTriggerContext();
+  const { openModalHandler } = modalTriggerContext();
   const [bookingData, setBookingData] = useState({
     dentist: {
       id: "",
@@ -86,7 +86,7 @@ export default function BookingPage() {
       } else if (token?.userId === "") {
         router.push("/login?open=true&type=signup&id=null");
       } else {
-        openModalComponent(false);
+        openModalHandler(false);
       }
     } catch (error) {
       setError("Failed to book the service. Please try again.");
