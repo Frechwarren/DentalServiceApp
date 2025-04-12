@@ -8,9 +8,9 @@ import Image from "next/image";
 
 // Define the Zod schema for validation
 const signupSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
+  firstName: z.string().min(1, "First name is required").max(30),
+  lastName: z.string().min(1, "Last name is required").max(30),
+  email: z.string().email("Invalid email address").max(50),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
@@ -23,8 +23,9 @@ const SignupForm = () => {
     password: "",
     role: "User",
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState([]);
   const [pending, setPending] = useState(false);
+  const formValidation = signupSchema.safeParse(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,28 +33,32 @@ const SignupForm = () => {
       ...prev,
       [name]: value,
     }));
-    setError((prev) => ({
-      ...prev,
-      [name]: null,
-    }));
+    setError((prev) => prev.filter((i) => i.field !== name));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setPending(true);
     setError(null);
+    if (!formValidation?.success) {
+      const errors = formValidation.error.errors.map((e) => ({
+        field: e.path[0],
+        message: e.message,
+      }));
 
-    try {
-      const response = await signup(formData);
-      console.log(response);
-      if (response.success === false) {
-        setError(response);
-      } else {
-        router.push("/login?success=true");
+      setError(errors);
+    } else {
+      try {
+        const response = await signup(formData);
+        console.log(response);
+        if (response.success === false) {
+          setError(response);
+        } else {
+          router.push("/login?success=true");
+        }
+      } catch (error) {
+        console.error("Error signing up:", error);
+        setError(error.message);
       }
-    } catch (error) {
-      console.error("Error signing up:", error);
-      setError(error.message);
     }
   };
 
@@ -79,7 +84,7 @@ const SignupForm = () => {
             <div className="mb-4 text-gray-700 font-medium">
               {error && (
                 <span className="my-2 text-red-500 text-sm">
-                  {error?.firstName}
+                  {error?.filter((i) => i.field === "firstName")[0]?.message}
                 </span>
               )}
               <input
@@ -96,7 +101,7 @@ const SignupForm = () => {
             <div className="mb-4 text-gray-700 font-medium">
               {error && (
                 <span className="my-2 text-red-500 text-sm">
-                  {error?.lastName}
+                  {error?.filter((i) => i.field === "lastName")[0]?.message}
                 </span>
               )}
               <input
@@ -113,7 +118,7 @@ const SignupForm = () => {
             <div className="mb-4 text-gray-700 font-medium">
               {error && (
                 <span className="my-2 text-red-500 text-sm">
-                  {error?.message}
+                  {error?.filter((i) => i.field === "email")[0]?.message}
                 </span>
               )}
               <input
@@ -130,7 +135,7 @@ const SignupForm = () => {
             <div className="mb-4 text-gray-700 font-medium">
               {error && (
                 <span className="my-2 text-red-500 text-sm">
-                  {error?.password}
+                  {error?.filter((i) => i.field === "password")[0]?.message}
                 </span>
               )}
               <input
@@ -149,7 +154,8 @@ const SignupForm = () => {
                 onClick={handleSubmit}
                 className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                {pending ? "Loading..." : "Sign Up"}
+                Sign Up
+                {/* {pending ? "Loading..." : "Sign Up"} */}
               </button>
             </div>
           </div>
