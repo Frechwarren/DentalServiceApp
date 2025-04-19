@@ -2,21 +2,35 @@
 
 import { createContext, useContext } from "react";
 import { useShowDialog } from "@/hooks/showDialog";
-import ShowSnackBarModal from "@/components/dialog/SnackBarDialog";
-import SuccessDialog from "../layout/SuccessDialog";
+import SignUpModal from "@/components/modal/SignUpModal";
+import BookedModal from "../modal/BookedModal";
 
 export const ModalContext = createContext({
-  openModal: true,
-  openModalHandler: () => {},
+  openBookedModal: true,
+  openSignUpModal: true,
+  openBookedModalHandler: () => {},
+  openSignUpModalHandler: () => {},
 });
 
 export default function ModalProvider({ children }) {
-  const { openModal, openModalHandler } = useShowDialog();
+  const {
+    openBookedModal,
+    openSignUpModal,
+    openBookedModalHandler,
+    openSignUpModalHandler,
+  } = useShowDialog();
 
   return (
-    <ModalContext.Provider value={{ openModal, openModalHandler }}>
-      <ShowSnackBarModal />
-      <SuccessDialog />
+    <ModalContext.Provider
+      value={{
+        openBookedModal,
+        openSignUpModal,
+        openBookedModalHandler,
+        openSignUpModalHandler,
+      }}
+    >
+      <SignUpModal />
+      <BookedModal />
       {children}
     </ModalContext.Provider>
   );

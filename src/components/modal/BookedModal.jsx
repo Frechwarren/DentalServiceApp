@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { ModalContext } from "../context/ModalProvide";
 
-const SuccessDialog = () => {
-  const { openModal, openModalComponent } = useContext(ModalContext);
+const BookedModal = () => {
+  const { openBookedModal, openBookedModalHandler } = useContext(ModalContext);
 
   const router = useRouter();
 
@@ -13,17 +13,17 @@ const SuccessDialog = () => {
 
   const handleConfirm = () => {
     router.push("/dashboard");
-    openModalComponent(true);
+    openBookedModalHandler(true);
   };
 
   const handleLogin = () => {
     router.push("/login");
-    openModalComponent(true);
+    openBookedModalHandler(true);
   };
 
   const handleCancel = () => {
     router.push("/");
-    openModalComponent(true);
+    openBookedModalHandler(true);
   };
 
   return (
@@ -32,7 +32,7 @@ const SuccessDialog = () => {
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
-      hidden={openModal}
+      hidden={openBookedModal}
     >
       <div
         className="fixed inset-0 bg-gray-500/75 transition-opacity"
@@ -93,4 +93,4 @@ const pageType = (type) => {
   }
 };
 
-export default SuccessDialog;
+export default BookedModal;

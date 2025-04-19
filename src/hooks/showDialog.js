@@ -3,9 +3,15 @@
 import { useState } from "react";
 
 export function useShowDialog() {
-  const [openModal, setOpenModal] = useState(true);
-  const openModalHandler = (open) => {
-    setOpenModal(open);
+  const [openBookedModal, setOpenBookedModal] = useState(true);
+  const [openSignUpModal, setOpenSignUpModal] = useState(true);
+
+  const openBookedModalHandler = (open) => {
+    setOpenBookedModal(open);
   };
-  return { openModal, openModalHandler };
+
+  const openSignUpModalHandler = (open) => {
+    setOpenSignUpModal(open);
+  };
+  return { openBookedModal, openSignUpModal, openBookedModalHandler, openSignUpModalHandler };
 }

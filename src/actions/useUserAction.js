@@ -13,6 +13,7 @@ export async function signup(formData) {
 
     if (!data.success) {
       return {
+        field: "email",
         success: false,
         message: data.message,
       };
@@ -20,6 +21,7 @@ export async function signup(formData) {
 
     return {
       success: true,
+      message: data?.message,
       data: data,
     };
   } catch (error) {

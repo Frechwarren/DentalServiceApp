@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import Users from "@/models/User";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
 
 // signup route
 export async function POST(req) {

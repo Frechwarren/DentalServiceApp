@@ -5,16 +5,22 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod"; // Import Zod
 import Image from "next/image";
+import { modalTriggerContext } from "../context/ModalProvide";
 
 // Define the Zod schema for validation
 const signupSchema = z.object({
   firstName: z.string().min(1, "First name is required").max(30),
   lastName: z.string().min(1, "Last name is required").max(30),
-  email: z.string().email("Invalid email address").max(50),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Invalid email address")
+    .max(50),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
 const SignupForm = () => {
+  const { openSignUpModalHandler } = modalTriggerContext();
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -49,22 +55,23 @@ const SignupForm = () => {
     } else {
       try {
         const response = await signup(formData);
-        console.log(response);
         if (response.success === false) {
-          setError(response);
+          setError([response]);
         } else {
-          router.push("/login?success=true");
+          openSignUpModalHandler(false);
+          router.push("/login");
         }
       } catch (error) {
         console.error("Error signing up:", error);
         setError(error.message);
       }
     }
+    setPending(false);
   };
 
   return (
     <div className="flex items-center min-h-screen bg-white">
-      <section className="hidden h-screen items-center justify-center lg:flex lg:justify-center lg:w-1/2">
+      <section className="hidden items-center justify-center lg:flex lg:justify-center lg:w-1/2 lg:h-1/2 overflow-hidden">
         <Image
           src="/images/homePageImage.jpg"
           alt="login"
@@ -96,6 +103,7 @@ const SignupForm = () => {
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter your first name"
                 required
+                suppressHydrationWarning={true}
               />
             </div>
             <div className="mb-4 text-gray-700 font-medium">
@@ -113,6 +121,7 @@ const SignupForm = () => {
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter your last name"
                 required
+                suppressHydrationWarning={true}
               />
             </div>
             <div className="mb-4 text-gray-700 font-medium">
@@ -130,6 +139,7 @@ const SignupForm = () => {
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter your email"
                 required
+                suppressHydrationWarning={true}
               />
             </div>
             <div className="mb-4 text-gray-700 font-medium">
@@ -147,6 +157,7 @@ const SignupForm = () => {
                 className="mt-3 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="Enter your password"
                 required
+                suppressHydrationWarning={true}
               />
             </div>
             <div>
@@ -154,8 +165,7 @@ const SignupForm = () => {
                 onClick={handleSubmit}
                 className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                Sign Up
-                {/* {pending ? "Loading..." : "Sign Up"} */}
+                {pending ? "Loading..." : "Sign Up"}
               </button>
             </div>
           </div>

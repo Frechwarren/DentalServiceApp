@@ -3,24 +3,29 @@
 import Image from "next/image";
 import { useEffect } from "react";
 import { modalTriggerContext } from "../context/ModalProvide";
+import { useRouter } from "next/navigation";
 
-const SnackBarDialog = () => {
-  const { openModal, openModalHandler } = modalTriggerContext();
+const SignUpModal = () => {
+  const { router } = useRouter();
+  const { openSignUpModal, openSignUpModalHandler } = modalTriggerContext();
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      openModalHandler(true);
-    }, 1000);
+    const closeTimeout = setTimeout(() => {
+      openSignUpModalHandler(true);
+    }, 5000);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(closeTimeout);
+    };
+  }, [router]);
 
   return (
     <div
-      className="relative"
+      className="fixed z-20 inset-0 flex overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
-      hidden={openModal}
+      hidden={openSignUpModal}
     >
       <div className="fixed w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -37,7 +42,7 @@ const SnackBarDialog = () => {
                 </div>
                 <div className="text-center sm:mt-0 sm:ml-4 sm:text-left p-2">
                   <h3 className="text-base font-semibold text-zinc-700">
-                    You have successfully booked an appointment
+                    You have successfully signed up
                   </h3>
                 </div>
               </div>
@@ -49,4 +54,4 @@ const SnackBarDialog = () => {
   );
 };
 
-export default SnackBarDialog;
+export default SignUpModal;
