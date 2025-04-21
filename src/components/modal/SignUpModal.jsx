@@ -1,24 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { modalTriggerContext } from "../context/ModalProvide";
 
 const SignUpModal = () => {
-  const modalRef = useRef(null);
   const { openSignUpModal, openSignUpModalHandler } = modalTriggerContext();
-
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        openSignUpModalHandler(true); 
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
+    const closeTimeout = setTimeout(() => {
+      openSignUpModalHandler(true);
+    }, 1500);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      clearTimeout(closeTimeout);
     };
   }, [openSignUpModalHandler]);
 
@@ -32,10 +26,7 @@ const SignUpModal = () => {
     >
       <div className="fixed w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div
-            ref={modalRef}
-            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-          >
+          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
                 <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:size-10">
