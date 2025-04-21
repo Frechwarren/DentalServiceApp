@@ -62,7 +62,7 @@ const NavbarMenu = ({ authenticate }) => {
               Book Appointment
             </Link>
             <Link
-              href="#service"
+              href="/services"
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
             >
               Service

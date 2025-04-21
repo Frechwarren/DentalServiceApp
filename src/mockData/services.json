@@ -3,7 +3,7 @@
     "id": "1001",
     "title": "Regular Checkup",
     "description": "Comprehensive dental examination and cleaning to maintain your oral health.",
-    "icon": "FaTooth", 
+    "icon": "FaStethoscope",
     "price": "$50"
   },
   {
@@ -31,7 +31,7 @@
     "id": "4004",
     "title": "Dental Crown",
     "description": "Permanent solution for missing teeth with natural-looking results.",
-    "icon": "FaStethoscope",
+    "icon": "FaTooth", 
     "price": "$3,000"
   },
   {
