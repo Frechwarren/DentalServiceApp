@@ -23,8 +23,6 @@ export default function AuthProvider({ children }) {
         } else {
           router.push("/dashboard");
         }
-      } else {
-        router.push("/");
       }
     };
 

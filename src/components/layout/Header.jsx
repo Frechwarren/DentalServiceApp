@@ -27,7 +27,7 @@ const Header = () => {
   const handleLogoutUser = async () => {
     const response = await logoutUser();
     if (response?.success) {
-      window.location.href = "/";
+      window.location.href = "/login";
     }
   };
 
