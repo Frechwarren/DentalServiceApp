@@ -8,6 +8,7 @@ import Image from "next/image";
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [pending, setPending] = useState(false);
+  const [success, setSuccess] = useState(false); // State to track success
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -27,12 +28,17 @@ const LoginForm = () => {
 
     if (response?.success === false || response.data?.success === false) {
       setError(response.message);
-    } else if (response.data.role !== "Admin") {
-      window.location.href = "/dashboard";
+      setPending(false);
     } else {
-      window.location.href = "/admin";
+      setSuccess(true); // Show success state
+      setTimeout(() => {
+        if (response.data.role !== "Admin") {
+          window.location.href = "/dashboard";
+        } else {
+          window.location.href = "/admin";
+        }
+      }, 1500);
     }
-    setPending(false);
   };
 
   return (
@@ -91,68 +97,34 @@ const LoginForm = () => {
             <div>
               <button
                 onClick={handleSubmit}
-                className="w-full flex justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-2xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                disabled={pending || success}
+                type="submit"
+                className={`w-full flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-2xl text-white ${
+                  success
+                    ? `bg-green-600 hover:bg-green-700 `
+                    : `bg-blue-600 hover:bg-blue-700 `
+                } focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  success ? `focus:ring-green-500` : `focus:ring-blue-500`
+                }`}
               >
-                {pending ? "Logging in..." : "Login"}
+                {pending ? (
+                  success ? (
+                    <div className="flex items-center">Success</div>
+                  ) : (
+                    <div className="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  )
+                ) : (
+                  "Login"
+                )}
               </button>
             </div>
           </div>
         </div>
       </section>
-    </div>
-  );
-};
-
-const SuccessDialog = ({ open, router }) => {
-  const handleConfirm = () => {
-    router.push("/login");
-  };
-
-  return (
-    <div
-      className="relative z-10"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-      hidden={!open}
-    >
-      <div
-        className="fixed inset-0 bg-gray-500/75 transition-opacity"
-        aria-hidden="true"
-      ></div>
-      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <h3
-                    className="text-base font-semibold text-gray-900"
-                    id="modal-title"
-                  >
-                    You have successfully registered your account
-                  </h3>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      To check your appointment details, please login to your
-                      account
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                onClick={handleConfirm}
-                type="button"
-                className="inline-flex w-full justify-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-green-500 sm:ml-3 sm:w-auto"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
