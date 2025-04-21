@@ -7,11 +7,20 @@ import { NextResponse } from "next/server";
 import Bookings from "@/models/Booking";
 
 export async function POST(req) {
-  const { email, password } = await req.json();
+  const { email, password } = await req?.json();
+  
+  if (!email || !password) {
+    return NextResponse.json({
+      success: false,
+      message: "Email and password are required",
+      role: "",
+    });
+  }
+
   const failObject = NextResponse.json({
     success: false,
     message: "Invalid email or password",
-    role: ""
+    role: "",
   });
   try {
     // Connect to the database
@@ -29,7 +38,7 @@ export async function POST(req) {
       existingUser.password
     );
     if (!isPasswordCorrect) {
-      return {...failObject, role: existingUser?.role};
+      return failObject;
     }
 
     const secretKey = process.env.JWT_SECRET;
