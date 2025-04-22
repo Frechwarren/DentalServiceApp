@@ -34,7 +34,6 @@ const AppointmentForm = ({
     }));
   };
 
-
   return (
     <div className="py-12 bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -144,11 +143,6 @@ const AppointmentForm = ({
                 <option
                   key={item.id}
                   value={item.title}
-                  className={
-                    service === item.title
-                      ? `text-white bg-blue-600`
-                      : `text-gray-700`
-                  }
                 >
                   {item.title} - {item.price}
                 </option>

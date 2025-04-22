@@ -33,7 +33,7 @@ const DentistSelection = ({ onSelectDentist, dentistData }) => {
               }`}
               onClick={() => handleDentistSelect(dentist)}
             >
-              <div className="relative h-100 lg:h-100 w-full mb-4">
+              <div className="relative h-100 lg:h-70 w-full mb-4">
                 <Image
                   src={dentist.image}
                   alt={dentist.name}

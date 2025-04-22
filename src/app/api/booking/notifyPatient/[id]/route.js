@@ -18,7 +18,6 @@ export async function PATCH(req, { params }) {
     const data = await Bookings.findByIdAndUpdate(id, {
       status: status,
     });
-    console.log("data", data);
 
     if (!data) {
       return NextResponse.json({

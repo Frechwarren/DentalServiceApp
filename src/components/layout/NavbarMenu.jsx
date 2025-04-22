@@ -91,6 +91,17 @@ const NavbarMenu = ({ authenticate }) => {
             >
               Sign In
             </Link>
+            <Link
+              href="/signup"
+              className={`block px-3 py-2 text-base font-medium ${
+                path.split("/")[1] === "signup"
+                  ? "text-blue-600"
+                  : "text-gray-700"
+              } hover:text-blue-600 hover:bg-gray-50`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       )}

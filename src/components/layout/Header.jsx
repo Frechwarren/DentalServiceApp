@@ -4,10 +4,11 @@ import Link from "next/link";
 import { authUser, logoutUser } from "@/lib/userAuthentication";
 import NavbarMenu from "./NavbarMenu";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const { route } = useRouter();
+  const path = usePathname();
   const [authenticate, setAuthenticate] = useState(false);
   const [userRole, setUserRole] = useState(null);
 
@@ -58,19 +59,27 @@ const Header = () => {
               <>
                 <Link
                   href="/booking"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className={`${
+                    path.split("/")[1] === "booking"
+                      ? "text-blue-600"
+                      : "text-gray-700"
+                  } px-3 py-2 rounded-md text-sm font-medium`}
                 >
                   Book Appointment
                 </Link>
                 <Link
                   href="/services"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className={`${
+                    path.split("/")[1] === "services"
+                      ? "text-blue-600"
+                      : "text-gray-700"
+                  } px-3 py-2 rounded-md text-sm font-medium`}
                 >
                   Services
                 </Link>
                 <Link
                   href="#contactInfo"
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+                  className={`text-gray-700 px-3 py-2 rounded-md text-sm font-medium`}
                 >
                   Contact Us
                 </Link>
@@ -94,10 +103,17 @@ const Header = () => {
                 Sign In
               </Link>
             )}
+
+            <Link
+              href="/signup"
+              className="border-1 border-blue-600 text-black px-4 py-[10px] rounded-md text-sm font-medium hover:bg-blue-600 hover:text-white"
+              suppressHydrationWarning={true}
+            >
+              Sign Up
+            </Link>
           </div>
 
           {/* Mobile menu button */}
-
           <NavbarMenu authenticate={authenticate} />
         </div>
       </nav>

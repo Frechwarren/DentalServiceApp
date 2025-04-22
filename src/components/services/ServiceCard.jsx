@@ -18,9 +18,8 @@ const ServiceCard = ({ title, description, icon: Icon, price }) => {
       <div className="flex items-center justify-between">
         <span className="text-blue-600 font-semibold">{price}</span>
         <button
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-3000"
-          type="submit"
           onClick={handleBookService}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
         >
           Book Now
         </button>
