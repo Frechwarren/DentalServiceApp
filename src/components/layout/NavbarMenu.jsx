@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NavbarMenu = ({ authenticate }) => {
+  const path = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -51,25 +53,41 @@ const NavbarMenu = ({ authenticate }) => {
           <div className="pt-2 pb-3 space-y-1 text-end">
             <Link
               href="/"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-zinc-400"
+              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-zinc-50"
+              onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/booking"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              className={`block px-3 py-2 text-base font-medium ${
+                path.split("/")[1] === "booking"
+                  ? "text-blue-600"
+                  : "text-gray-700"
+              } hover:text-blue-600 hover:bg-gray-50`}
+              onClick={() => setIsMenuOpen(false)}
             >
               Book Appointment
             </Link>
             <Link
               href="/services"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              className={`block px-3 py-2 text-base font-medium ${
+                path.split("/")[1] === "services"
+                  ? "text-blue-600"
+                  : "text-gray-700"
+              } hover:text-blue-600 hover:bg-gray-50`}
+              onClick={() => setIsMenuOpen(false)}
             >
               Service
             </Link>
             <Link
               href="/login"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              className={`block px-3 py-2 text-base font-medium ${
+                path.split("/")[1] === "login"
+                  ? "text-blue-600"
+                  : "text-gray-700"
+              } hover:text-blue-600 hover:bg-gray-50`}
+              onClick={() => setIsMenuOpen(false)}
             >
               Sign In
             </Link>
