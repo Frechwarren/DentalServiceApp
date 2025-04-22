@@ -7,16 +7,16 @@ const NavbarMenu = ({ authenticate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="flex justify-end sm:hidden">
-      <div className="flex items-center sm:hidden">
+    <div className="relative flex-wrap justify-center item-center py-3 sm:hidden">
+      <div className="flex justify-end items-center sm:hidden">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+          className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500"
         >
           <span className="sr-only">Open main menu</span>
           {!isMenuOpen ? (
             <svg
-              className="block h-6 w-6"
+              className="block h-6 w-6 stroke-zinc-800"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -30,7 +30,7 @@ const NavbarMenu = ({ authenticate }) => {
             </svg>
           ) : (
             <svg
-              className="block h-6 w-6"
+              className="block h-6 w-6 stroke-zinc-800"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -47,16 +47,16 @@ const NavbarMenu = ({ authenticate }) => {
       </div>
 
       {isMenuOpen && (
-        <div className="relative sm:hidden justify-center items-center">
+        <div className="relative sm:hidden justify-center items-center bg-white border-2 border-zinc-400 py-3 rounded-md shadow-lg">
           <div className="pt-2 pb-3 space-y-1 text-end">
             <Link
               href="/"
-              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-zinc-400"
             >
               Home
             </Link>
             <Link
-              href={authenticate ? "/booking" : "/login"}
+              href="/booking"
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
             >
               Book Appointment

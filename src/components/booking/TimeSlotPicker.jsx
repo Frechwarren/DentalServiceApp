@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-const TimeSlotPicker = ({ onSelectDateAndTime }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(null);
+const TimeSlotPicker = ({ onSelectDateAndTime, date, time }) => {
+  const [selectedDate, setSelectedDate] = useState(!date ? new Date() : date);
+  const [selectedTime, setSelectedTime] = useState(!time ? null : time);
 
   // Generate time slots for the selected date
   const generateTimeSlots = () => {

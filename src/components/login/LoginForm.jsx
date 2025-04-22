@@ -111,7 +111,7 @@ const LoginForm = () => {
                   success ? (
                     <div className="flex items-center">Success</div>
                   ) : (
-                    <div className="lds-ellipsis">
+                    <div className="lds-ellipsis mr-2">
                       <div></div>
                       <div></div>
                       <div></div>

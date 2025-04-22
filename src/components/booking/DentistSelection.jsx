@@ -4,11 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import dentists from "@/mockData/dentist.json";
 
-const DentistSelection = ({ onSelectDentist }) => {
-  const [selectedDentist, setSelectedDentist] = useState(null);
-
-  const handleDentistSelect = (dentist) => { 
-    setSelectedDentist(dentist.id);
+const DentistSelection = ({ onSelectDentist, dentistData }) => {
+  const handleDentistSelect = (dentist) => {
     onSelectDentist(dentist);
   };
 
@@ -30,7 +27,7 @@ const DentistSelection = ({ onSelectDentist }) => {
               key={dentist.id}
               id="date"
               className={`relative rounded-lg border p-6 cursor-pointer transition-all duration-200 ${
-                selectedDentist === dentist.id
+                dentistData.id === dentist.id
                   ? "border-blue-500 shadow-lg"
                   : "border-gray-200 hover:border-blue-300"
               }`}

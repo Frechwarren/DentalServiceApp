@@ -96,18 +96,19 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-hidden">
       {/* Progress Steps */}
       <div className="bg-white shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center">
+          <div className="flex items-center justify-center mx-10 sm:mx-0">
+            <div className="flex items-center flex-col sm:flex-row">
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                   currentStep >= 1
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}
+                onClick={() => setCurrentStep(1)}
               >
                 1
               </div>
@@ -115,23 +116,24 @@ export default function BookingPage() {
                 <div className="text-sm font-medium text-gray-900">
                   Choose Dentist
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 hidden sm:block">
                   Select your preferred dentist
                 </div>
               </div>
             </div>
 
             <div className="flex items-center mx-8">
-              <div className="w-16 h-0.5 bg-gray-200" />
+              <div className="w-8 lg:w-16 h-0.5 bg-gray-200" />
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center flex-col sm:flex-row">
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                   currentStep >= 2
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}
+                onClick={() => setCurrentStep(2)}
               >
                 2
               </div>
@@ -139,23 +141,24 @@ export default function BookingPage() {
                 <div className="text-sm font-medium text-gray-900">
                   Select Time
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 hidden sm:block">
                   Pick your appointment time
                 </div>
               </div>
             </div>
 
             <div className="flex items-center mx-8">
-              <div className="w-16 h-0.5 bg-gray-200" />
+              <div className="w-8 lg:w-16 h-0.5 bg-gray-200" />
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center flex-col sm:flex-row">
               <div
                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                   currentStep >= 3
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200 text-gray-600"
                 }`}
+                onClick={() => setCurrentStep(3)}
               >
                 3
               </div>
@@ -163,7 +166,7 @@ export default function BookingPage() {
                 <div className="text-sm font-medium text-gray-900">
                   Fill Details
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-500 hidden sm:block">
                   Complete your information
                 </div>
               </div>
@@ -175,11 +178,18 @@ export default function BookingPage() {
       {/* Booking Components */}
       <div className="py-8">
         {currentStep === 1 && (
-          <DentistSelection onSelectDentist={handleDentistSelect} />
+          <DentistSelection
+            onSelectDentist={handleDentistSelect}
+            dentistData={bookingData?.dentist}
+          />
         )}
         {currentStep === 2 && (
           <>
-            <TimeSlotPicker onSelectDateAndTime={handleDateAndTimeSelect} />
+            <TimeSlotPicker
+              onSelectDateAndTime={handleDateAndTimeSelect}
+              date={bookingData.date}
+              time={bookingData.time}
+            />
           </>
         )}
         {currentStep === 3 && (

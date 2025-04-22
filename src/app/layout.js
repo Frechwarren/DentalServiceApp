@@ -26,7 +26,9 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen flex flex-col">
           <AuthProvider>
             <ModalProvider>
-              <Header />
+              <div className="sticky top-0 bg-white shadow-sm">
+                <Header />
+              </div>
               <main className="flex-grow">{children}</main>
               <Footer />
             </ModalProvider>
