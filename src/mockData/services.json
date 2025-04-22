@@ -14,21 +14,21 @@
     "price": "$150"
   },
   {
-    "id": "2002",
+    "id": "3003",
     "title": "Teeth Cleaning",
     "description": "Professional teeth cleaning treatment for a brighter, more confident smile.",
     "icon": "FaTeeth",
     "price": "$150"
   },
   {
-    "id": "3003",
+    "id": "4004",
     "title": "Dental Filling",
     "description": "Permanent solution for missing teeth with natural-looking results.",
     "icon": "FaTeethOpen",
     "price": "$2,500"
   },
   {
-    "id": "4004",
+    "id": "5005",
     "title": "Dental Crown",
     "description": "Permanent solution for missing teeth with natural-looking results.",
     "icon": "FaTooth", 

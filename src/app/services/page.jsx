@@ -1,3 +1,5 @@
+"use client";
+
 import ServiceContainer from '@/components/services/ServiceContainer'
 import React from 'react'
 

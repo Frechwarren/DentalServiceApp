@@ -1,30 +1,25 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import services from "@/mockData/services.json";
 
-const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) => {
+const AppointmentForm = ({
+  onSubmit,
+  bookingData,
+  pending,
+  handleSendEmail,
+}) => {
+  const searchParams = useSearchParams();
+  const service = searchParams.get("service");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     dateOfBirth: "",
-    reason: "",
+    reason: service || "",
     notes: "",
   });
-
-  // Convert date to readable format
-  const initialData = new Date(bookingData?.date);
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  };
-  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
-    initialData
-  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +33,7 @@ const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) =>
       [name]: value,
     }));
   };
+
 
   return (
     <div className="py-12 bg-white">
@@ -141,14 +137,22 @@ const AppointmentForm = ({ onSubmit, bookingData, pending, handleSendEmail }) =>
               onChange={handleChange}
               className="text-gray-700 mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
-              <option value="">Select a reason</option>
-              <option value="checkup">Regular Checkup</option>
-              <option value="cleaning">Teeth Cleaning</option>
-              <option value="whitening">Teeth Whitening</option>
-              <option value="filling">Dental Filling</option>
-              <option value="crown">Dental Crown</option>
-              <option value="emergency">Emergency Care</option>
-              <option value="other">Other</option>
+              <option value="" hidden={true}>
+                Select a reason
+              </option>
+              {services?.map((item) => (
+                <option
+                  key={item.id}
+                  value={item.title}
+                  className={
+                    service === item.title
+                      ? `text-white bg-blue-600`
+                      : `text-gray-700`
+                  }
+                >
+                  {item.title} - {item.price}
+                </option>
+              ))}
             </select>
           </div>
 
